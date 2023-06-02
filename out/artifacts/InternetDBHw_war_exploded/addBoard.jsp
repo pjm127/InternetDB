@@ -15,10 +15,8 @@
     BoardRepository boardRepository = BoardRepository.getInstance();
     String title = request.getParameter("title");
     String content = request.getParameter("content");
-
-
     Board board = new Board(title,content, LocalDateTime.now());
-    boardRepository.saveBoard(board);
+    boardRepository.save(board);
 
 %>
 

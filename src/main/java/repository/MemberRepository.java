@@ -5,6 +5,7 @@ import config.Encrypt;
 import domain.Member;
 
 import java.sql.*;
+import java.util.List;
 import java.util.logging.Logger;
 
 
@@ -18,7 +19,7 @@ public class MemberRepository {
 
     Encrypt en = Encrypt.getInstance();
 
-    public Member save(Member member) throws SQLException {
+    public Member join(Member member) throws SQLException {
         String sql = "insert into Member(name,id,password,studentID) values(?, ?,?,?)";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -42,36 +43,48 @@ public class MemberRepository {
         }
     }
 
-
-    public Member findById(String id) throws SQLException {
-        String sql = "select password from member where id = ?";
+    public boolean findByid(String id) throws SQLException {
+        String sql = "SELECT id FROM member WHERE id = ?";
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        boolean isIdDuplicate = false;
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, id);
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                Member member = new Member();
-                member.setId(rs.getString("password"));
-
-                return member;
-            } else {
-                throw new IllegalStateException();
+                isIdDuplicate = true;
             }
         } catch (SQLException e) {
             throw e;
         } finally {
             close(con, pstmt, rs);
         }
+        return isIdDuplicate;
     }
-
-
-
-
-
+    public boolean findByStudentId(String studentId) throws SQLException {
+        String sql = "SELECT studentId FROM member WHERE studentId = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        boolean isStudentIdDuplicate = false;
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, studentId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                isStudentIdDuplicate = true;
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            close(con, pstmt, rs);
+        }
+        return isStudentIdDuplicate;
+    }
 
     private void close(Connection con, Statement stmt, ResultSet rs) {
         if (rs != null) {

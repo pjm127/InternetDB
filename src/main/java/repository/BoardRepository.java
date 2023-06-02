@@ -49,14 +49,15 @@ public class BoardRepository {
     }
 
     public Board save(Board board) throws SQLException {
-        String sql = "insert into Board(title, create_date) values(?,?)";
+        String sql = "insert into Board(title,content, create_date) values(?,?,?)";
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, board.getTitle());
-            pstmt.setTimestamp(2, Timestamp.valueOf(board.getCreate_date()));
+            pstmt.setString(2, board.getContent());
+            pstmt.setTimestamp(3, Timestamp.valueOf(board.getCreate_date()));
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
                 ResultSet generatedKeys = pstmt.getGeneratedKeys();

@@ -11,7 +11,6 @@
     request.setCharacterEncoding("utf-8");
     BoardRepository boardRepository = BoardRepository.getInstance();
     List<Board> boardList = boardRepository.getBoard();
-
 %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -21,24 +20,28 @@
 </head>
 <body>
 <center>
-    <h2>test01 table 의 내용을 출력해 보자 </h2>
-    <TABLE BORDER= "1" width=400>
-        <TR>
-            <TH>NO</TH>
-            <TH>NAME</TH>
-            <TH>HDATE</TH>
-            <th>수정</th>
-        </TR>
-        <% for (Board board : boardList) {%>
-        <TR>
-            <TD><%= board.getTitle() %></TD>
-            <TD><%= board.getContent() %></TD>
-            <TD><%= board.getCreate_date() %></TD>
-
-        </TR>
+    <h2>test01 table의 내용을 출력해 보자</h2>
+    <table border="1" width="400">
+        <tr>
+            <th>NO</th>
+            <th>NAME</th>
+            <th>HDATE</th>
+            <th>HDATE</th>
+        </tr>
+        <% for (Board board : boardList) { %>
+        <tr>
+            <td><a href="/board.jsp/<%= board.getId() %>"><%= board.getTitle() %></a></td>
+            <td><%= board.getContent() %></td>
+            <td><%= board.getCreate_date() %></td>
+            <td>
+                <form method="POST" action="/delete.jsp">
+                    <input type="hidden" name="id" value="<%= board.getId() %>">
+                    <input type="submit" value="Delete">
+                </form>
+            </td>
+        </tr>
         <% } %>
-    </TABLE>
+    </table>
 </center>
-
 </body>
 </html>
