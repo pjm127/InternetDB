@@ -18,7 +18,7 @@ public class MemberRepository {
 
     Encrypt en = Encrypt.getInstance();
 
-    public Member saveMember(Member member) throws SQLException {
+    public Member save(Member member) throws SQLException {
         String sql = "insert into Member(name,id,password,studentID) values(?, ?,?,?)";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -43,30 +43,30 @@ public class MemberRepository {
     }
 
 
-//    public Member findById(String id) throws SQLException {
-//        String sql = "select password from member where id = ?";
-//        Connection con = null;
-//        PreparedStatement pstmt = null;
-//        ResultSet rs = null;
-//        try {
-//            con = getConnection();
-//            pstmt = con.prepareStatement(sql);
-//            pstmt.setString(1, id);
-//            rs = pstmt.executeQuery();
-//            if (rs.next()) {
-//                Member member = new Member();
-//                member.setId(rs.getString("id"));
-//                member.setMoney(rs.getInt("money"));
-//                return member;
-//            } else {
-//                //throw new NoSuchElementException("member not found memberId=" + memberId);
-//            }
-//        } catch (SQLException e) {
-//            throw e;
-//        } finally {
-//            close(con, pstmt, rs);
-//        }
-//    }
+    public Member findById(String id) throws SQLException {
+        String sql = "select password from member where id = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                Member member = new Member();
+                member.setId(rs.getString("password"));
+
+                return member;
+            } else {
+                throw new IllegalStateException();
+            }
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            close(con, pstmt, rs);
+        }
+    }
 
 
 

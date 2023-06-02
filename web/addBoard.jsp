@@ -18,7 +18,7 @@
 
 
     Board board = new Board(title,content, LocalDateTime.now());
-    boardRepository.saveBoard(board);
+    boardRepository.save(board);
 
 %>
 

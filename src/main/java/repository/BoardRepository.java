@@ -48,7 +48,7 @@ public class BoardRepository {
         return posts;
     }
 
-    public Board saveBoard(Board board) throws SQLException {
+    public Board save(Board board) throws SQLException {
         String sql = "insert into Board(title, create_date) values(?,?)";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -75,7 +75,7 @@ public class BoardRepository {
         }
     }
 
-    private void updateBoard(int id, String title, String content) throws SQLException {
+    private void update(int id, String title, String content) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         String sql = "UPDATE Board SET title = ?, content = ? WHERE id = ?";
@@ -91,7 +91,21 @@ public class BoardRepository {
         }
     }
 
-
+    public void delete(String id) throws SQLException {
+        String sql = "delete from board where id=?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw e;
+        } finally {
+            close(con, pstmt, null);
+        }
+    }
 
 
 

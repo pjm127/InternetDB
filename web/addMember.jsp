@@ -27,7 +27,7 @@
 
 
     Member member = new Member(id,username,password,studentId);
-    memberRepository.saveMember(member);
+    memberRepository.save(member);
 
 %>
 
