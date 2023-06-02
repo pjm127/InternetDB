@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="InternetDBHw:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/InternetDBHw_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="InternetDBHw" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="InternetDBHw/web/Web" />
+    </root>
+  </artifact>
+</component>
