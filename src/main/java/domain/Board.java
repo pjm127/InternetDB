@@ -5,25 +5,31 @@ import java.util.List;
 
 public class Board {
 
-    private Long id;
+    private Integer id;
     private String title;
     private String content;
     private LocalDateTime create_date;
 
-    public Board(String title, String content, LocalDateTime create_date) {
+    public Board(Integer id , String title, String content, LocalDateTime create_date) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.create_date = create_date;
     }
+    public Board( String title, String content, LocalDateTime create_date) {
 
+        this.title = title;
+        this.content = content;
+        this.create_date = create_date;
+    }
     public Board() {
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

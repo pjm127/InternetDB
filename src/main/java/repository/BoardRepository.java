@@ -11,7 +11,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.LocalTime.*;
 
 
 public class BoardRepository {
@@ -23,31 +22,63 @@ public class BoardRepository {
         return instance;
     }
 
+    //전체 글 조회
     public List<Board> getBoard() throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        List<Board> posts = new ArrayList<>();
-        String sql = "SELECT title, content, create_date FROM board";
+        List<Board> boardList = new ArrayList<>();
+        String sql = "SELECT id,title, content, create_date FROM board";
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
             rs = pstmt.executeQuery(sql);
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String title = rs.getString("title");
                 String content = rs.getString("content");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime create_date = LocalDateTime.parse(rs.getString("create_date"),formatter);
-                posts.add(new Board(title, content, create_date));
+                boardList.add(new Board(id, title, content, create_date));
             }
         } finally {
             close(con, pstmt, rs);
         }
 
-        return posts;
+        return boardList;
     }
 
+    //게시글 단건 d로 조화
+    public Board getBoardById(int id) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        Board board = null;
+        String sql = "SELECT id,title, content, create_date FROM board where id = ?";
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1,id);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                LocalDateTime create_date = LocalDateTime.parse(rs.getString("create_date"),formatter);
+                board = new Board(id, title, content, create_date);
+            }
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return board;
+    }
+
+
+
+    //게시글 저장
     public Board save(Board board) throws SQLException {
         String sql = "insert into Board(title,content, create_date) values(?,?,?)";
         Connection con = null;
@@ -76,7 +107,8 @@ public class BoardRepository {
         }
     }
 
-    private void update(int id, String title, String content) throws SQLException {
+    //게시글 수정
+    public void update(int id, String title, String content) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         String sql = "UPDATE Board SET title = ?, content = ? WHERE id = ?";
@@ -92,14 +124,15 @@ public class BoardRepository {
         }
     }
 
-    public void delete(String id) throws SQLException {
+    //게시글 삭제
+    public void delete(int id) throws SQLException {
         String sql = "delete from board where id=?";
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, id);
+            pstmt.setInt(1, id);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             throw e;
@@ -107,6 +140,7 @@ public class BoardRepository {
             close(con, pstmt, null);
         }
     }
+
 
 
 

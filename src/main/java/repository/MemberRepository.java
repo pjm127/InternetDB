@@ -19,6 +19,7 @@ public class MemberRepository {
 
     Encrypt en = Encrypt.getInstance();
 
+    //회원가입
     public Member join(Member member) throws SQLException {
         String sql = "insert into Member(name,id,password,studentID) values(?, ?,?,?)";
         Connection con = null;
@@ -43,6 +44,7 @@ public class MemberRepository {
         }
     }
 
+    //id찾기
     public boolean findByid(String id) throws SQLException {
         String sql = "SELECT id FROM member WHERE id = ?";
         Connection con = null;
@@ -64,6 +66,7 @@ public class MemberRepository {
         }
         return isIdDuplicate;
     }
+    //학번찾기
     public boolean findByStudentId(String studentId) throws SQLException {
         String sql = "SELECT studentId FROM member WHERE studentId = ?";
         Connection con = null;
