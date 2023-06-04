@@ -10,12 +10,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %><%
   BoardRepository boardRepository = BoardRepository.getInstance();
   String id = request.getParameter("id");
-  String loginNmae = (String) session.getAttribute("name");
+  String loginName = (String) session.getAttribute("name");
 
-  // 작성자 ID와 로그인한 ID 비교 후 삭제 로직
+  // 작성자 이름 와 로그인한 계정 이름 비교
   try {
     Board board = boardRepository.getBoardById(Integer.valueOf(id));
-    if (board != null && board.getWriter().equals(loginNmae)) {
+    if (board != null && board.getWriter().equals(loginName)) {
       boardRepository.delete(Integer.valueOf(id));
     } else {
 
