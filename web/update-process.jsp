@@ -13,7 +13,7 @@
   String title = request.getParameter("title");
   String content = request.getParameter("content");
 
-  // 게시글 수정 로직
+
   Board board = boardRepository.getBoardById(Integer.valueOf(id));
   board.setTitle(title);
   board.setContent(content);

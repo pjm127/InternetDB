@@ -10,9 +10,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %><%
   BoardRepository boardRepository = BoardRepository.getInstance();
   String id = request.getParameter("id");
-  // 게시글 수정 로직
+  String loginNmae = (String) session.getAttribute("name");
+
+  // 작성자 ID와 로그인한 ID 비교 후 삭제 로직
   try {
-    boardRepository.delete(Integer.valueOf(id));
+    Board board = boardRepository.getBoardById(Integer.valueOf(id));
+    if (board != null && board.getWriter().equals(loginNmae)) {
+      boardRepository.delete(Integer.valueOf(id));
+    } else {
+
+      throw new RuntimeException("삭제할 수 없습니다.");
+    }
   } catch (SQLException e) {
     throw new RuntimeException(e);
   }

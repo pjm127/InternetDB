@@ -2,6 +2,7 @@
 <%@ page import="repository.MemberRepository" %>
 <%@ page import="java.util.Objects" %>
 <%@ page import="config.Encrypt" %>
+<%@ page import="domain.UserStatus" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     request.setCharacterEncoding("utf-8");
@@ -36,7 +37,7 @@
         out.println("이미 사용 중인 학번.");
     } else {
         // 비밀번호가 일치할 경우 회원 가입 로직 수행
-        Member member = new Member(id, username, password, studentId);
+        Member member = new Member(id, username, password, studentId, UserStatus.USER);
         memberRepository.join(member);
         out.println("회원 가입이 완료되었습니다");
     }

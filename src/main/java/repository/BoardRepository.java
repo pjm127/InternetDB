@@ -50,7 +50,7 @@ public class BoardRepository {
         return boardList;
     }
 
-    //게시글 단건 d로 조화
+    //게시글 단건 id로 조회
     public Board getBoardById(int id) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
