@@ -26,7 +26,7 @@
 <body>
 <h2>수정</h2>
 
-<p><a href="board.jsp?id=<%= board.getId() %>">수정된 게시글 보기</a></p>
+
 
 </body>
 </html>
