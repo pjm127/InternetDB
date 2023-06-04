@@ -5,21 +5,29 @@ import java.util.List;
 
 public class Board {
 
-    private Integer id;
-    private String title;
-    private String content;
+    private Integer id; //pk
+    private String title; //제목
+    private String content; //내용
+
+    private String writer; //작성자
+
+
     private LocalDateTime create_date;
 
-    public Board(Integer id , String title, String content, LocalDateTime create_date) {
+
+
+    public Board(Integer id , String title, String content, String writer,LocalDateTime create_date) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.writer= writer;
         this.create_date = create_date;
     }
-    public Board( String title, String content, LocalDateTime create_date) {
+    public Board( String title, String content,  String writer,LocalDateTime create_date) {
 
         this.title = title;
         this.content = content;
+        this.writer = writer;
         this.create_date = create_date;
     }
     public Board() {
@@ -55,5 +63,13 @@ public class Board {
 
     public void setCreate_date(LocalDateTime create_date) {
         this.create_date = create_date;
+    }
+
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
     }
 }

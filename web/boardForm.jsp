@@ -23,7 +23,10 @@
       <td> 내용</td>
       <td> <input type="text" name="content" size="20" ></td>
     </tr>
-
+    <tr>
+      <td> 작성자</td>
+      <td> <input type="text" name="writer" size="20" ></td>
+    </tr>
     <tr>
       <td> <input type="submit" value="전송"> </td>
       <td> <input type="reset" value="취소"> </td>

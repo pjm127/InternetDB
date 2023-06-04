@@ -28,7 +28,7 @@ public class BoardRepository {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         List<Board> boardList = new ArrayList<>();
-        String sql = "SELECT id,title, content, create_date FROM board";
+        String sql = "SELECT id,title, content, create_date, writer FROM board";
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
@@ -39,8 +39,9 @@ public class BoardRepository {
                 String title = rs.getString("title");
                 String content = rs.getString("content");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String writer = rs.getString("writer");
                 LocalDateTime create_date = LocalDateTime.parse(rs.getString("create_date"),formatter);
-                boardList.add(new Board(id, title, content, create_date));
+                boardList.add(new Board(id, title, content, writer,create_date));
             }
         } finally {
             close(con, pstmt, rs);
@@ -55,7 +56,7 @@ public class BoardRepository {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         Board board = null;
-        String sql = "SELECT id,title, content, create_date FROM board where id = ?";
+        String sql = "SELECT id,title, content, create_date,writer FROM board where id = ?";
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
@@ -65,9 +66,10 @@ public class BoardRepository {
             while (rs.next()) {
                 String title = rs.getString("title");
                 String content = rs.getString("content");
+                String writer = rs.getString("writer");
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 LocalDateTime create_date = LocalDateTime.parse(rs.getString("create_date"),formatter);
-                board = new Board(id, title, content, create_date);
+                board = new Board(id, title, content, writer,create_date);
             }
         } finally {
             close(con, pstmt, rs);
@@ -80,7 +82,7 @@ public class BoardRepository {
 
     //게시글 저장
     public Board save(Board board) throws SQLException {
-        String sql = "insert into Board(title,content, create_date) values(?,?,?)";
+        String sql = "insert into Board(title,content, create_date,writer) values(?,?,?,?)";
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -89,6 +91,7 @@ public class BoardRepository {
             pstmt.setString(1, board.getTitle());
             pstmt.setString(2, board.getContent());
             pstmt.setTimestamp(3, Timestamp.valueOf(board.getCreate_date()));
+            pstmt.setString(4, board.getWriter());
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
                 ResultSet generatedKeys = pstmt.getGeneratedKeys();

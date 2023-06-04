@@ -7,6 +7,8 @@ public class Member {
     private String studentID;//학번
     private String name; //이름
 
+
+
     public String getId() {
         return id;
     }
