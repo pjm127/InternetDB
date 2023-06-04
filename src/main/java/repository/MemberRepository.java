@@ -3,6 +3,7 @@ package repository;
 import config.DBConnectionUtil;
 import config.Encrypt;
 import domain.Member;
+import domain.UserStatus;
 
 import java.sql.*;
 import java.util.List;
@@ -21,7 +22,7 @@ public class MemberRepository {
 
     //회원가입
     public Member join(Member member) throws SQLException {
-        String sql = "insert into Member(name,id,password,studentID) values(?, ?,?,?)";
+        String sql = "insert into Member(name,id,password,studentID,role) values(?, ?,?,?,?)";
         Connection con = null;
         PreparedStatement pstmt = null;
         String s = en.getSalt();
@@ -33,6 +34,7 @@ public class MemberRepository {
             pstmt.setString(2, member.getId());
             pstmt.setString(3,re_pas);
             pstmt.setString(4, member.getStudentID());
+            pstmt.setString(5, String.valueOf(UserStatus.USER));
             pstmt.executeUpdate();
             return member;
 

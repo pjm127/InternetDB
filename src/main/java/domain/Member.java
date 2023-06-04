@@ -7,7 +7,7 @@ public class Member {
     private String studentID;//학번
     private String name; //이름
 
-
+    private UserStatus userStatus;
 
     public String getId() {
         return id;
@@ -41,13 +41,22 @@ public class Member {
         this.studentID = studentID;
     }
 
+    public UserStatus getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(UserStatus userStatus) {
+        this.userStatus = userStatus;
+    }
+
     public Member() {
     }
 
-    public Member(String id, String name, String password, String studentID) {
+    public Member(String id, String name, String password, String studentID,UserStatus userStatus) {
         this.id=id;
         this.name = name;
         this.password = password;
         this.studentID = studentID;
+        this.userStatus = userStatus;
     }
 }
