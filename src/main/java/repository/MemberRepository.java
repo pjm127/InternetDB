@@ -46,7 +46,7 @@ public class MemberRepository {
         }
     }
 
-    //id찾기
+    //id찾기 id중복확인
     public boolean findByid(String id) throws SQLException {
         String sql = "SELECT id FROM member WHERE id = ?";
         Connection con = null;
@@ -68,7 +68,7 @@ public class MemberRepository {
         }
         return isIdDuplicate;
     }
-    //학번찾기
+    //학번찾기 학번중복확인
     public boolean findByStudentId(String studentId) throws SQLException {
         String sql = "SELECT studentId FROM member WHERE studentId = ?";
         Connection con = null;
