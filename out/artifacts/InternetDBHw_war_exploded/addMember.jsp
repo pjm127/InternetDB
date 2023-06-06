@@ -9,9 +9,8 @@
     MemberRepository memberRepository = MemberRepository.getInstance();
     Encrypt en = Encrypt.getInstance();
 
-    String username = request.getParameter("username");
+    String username = request.getParameter("email");
     String studentId = request.getParameter("studentId");
-    String id = request.getParameter("id");
     String password = request.getParameter("password");
     String s = en.getSalt();
     String re_pas = en.getEnc(password, s);
@@ -27,17 +26,15 @@
 <h2>입력 완료된 회원 정보</h2>
 <%
     // 중복 체크
-    boolean isIdDuplicate = memberRepository.findByid(id);
+
     boolean isStudentIdDuplicate = memberRepository.findByStudentId(studentId);
 
     // 중복된 경우 에러 메시지 출력
-    if (isIdDuplicate) {
-        out.println("이미 사용 중인 사용자명.");
-    } else if (isStudentIdDuplicate) {
+   if (isStudentIdDuplicate) {
         out.println("이미 사용 중인 학번.");
     } else {
         // 비밀번호가 일치할 경우 회원 가입 로직 수행
-        Member member = new Member(id, username, password, studentId, UserStatus.USER);
+        Member member = new Member( username, password, studentId,UserStatus.USER);
         memberRepository.join(member);
         out.println("회원 가입이 완료되었습니다");
     }

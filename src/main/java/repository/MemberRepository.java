@@ -6,6 +6,7 @@ import domain.Member;
 import domain.UserStatus;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -21,22 +22,29 @@ public class MemberRepository {
     Encrypt en = Encrypt.getInstance();
 
     //회원가입
-    public Member join(Member member) throws SQLException {
-        String sql = "insert into Member(name,id,password,studentID,role) values(?, ?,?,?,?)";
+    public void join(Member member) throws SQLException {
+        String sql = "insert into Member(member_email,member_pd,member_num,mem_created_t,mem_role) values( ?,?,?,?,?)";
         Connection con = null;
         PreparedStatement pstmt = null;
         String s = en.getSalt();
         String re_pas = en.getEnc(member.getPassword(),s);
         try {
             con = getConnection();
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, member.getName());
-            pstmt.setString(2, member.getId());
-            pstmt.setString(3,re_pas);
-            pstmt.setString(4, member.getStudentID());
+            pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            pstmt.setString(1, member.getEmail());
+            pstmt.setString(2,re_pas);
+            pstmt.setString(3, member.getStudentID());
+            pstmt.setDate(4, new Date(System.currentTimeMillis()));
             pstmt.setString(5, String.valueOf(UserStatus.USER));
-            pstmt.executeUpdate();
-            return member;
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                ResultSet generatedKeys = pstmt.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int generatedId = generatedKeys.getInt(1);
+                    System.out.println("new ID: " + generatedId);
+                }
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -70,7 +78,7 @@ public class MemberRepository {
     }
     //학번찾기 학번중복확인
     public boolean findByStudentId(String studentId) throws SQLException {
-        String sql = "SELECT studentId FROM member WHERE studentId = ?";
+        String sql = "SELECT member_num FROM member WHERE member_num = ?";
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;

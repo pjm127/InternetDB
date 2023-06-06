@@ -15,20 +15,8 @@
 <form method="post" action="addMember.jsp">
     <table>
         <tr>
-            <td> 아이디</td>
-            <td> <input type="text" name="id" size="20" ></td>
-        </tr>
-
-
-        <tr>
-            <td> 이름</td>
-            <td> <input type="text" name="username" size="20" ></td>
-        </tr>
-
-
-        <tr>
-            <td> 학번 </td>
-            <td> <input type="text" name="studentId" size="20" ></td>
+            <td> 이메일</td>
+            <td> <input type="text" name="email" size="20" ></td>
         </tr>
 
 
@@ -41,6 +29,13 @@
             <td> <input type="text" name="password1" size="20" ></td>
         </tr>
 
+
+
+
+        <tr>
+            <td> 학번 </td>
+            <td> <input type="text" name="studentId" size="20" ></td>
+        </tr>
 
 
 

@@ -15,10 +15,10 @@
     BoardRepository boardRepository = BoardRepository.getInstance();
     String title = request.getParameter("title");
     String content = request.getParameter("content");
-    String writer = request.getParameter("writer");
+    int user_id = (int) session.getAttribute("user_id");
+    Board board = new Board(title,content);
+    boardRepository.save(board,user_id);
 
-    Board board = new Board(title,content, writer,LocalDateTime.now());
-    boardRepository.save(board);
 
 
 %>

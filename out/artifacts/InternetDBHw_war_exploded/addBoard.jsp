@@ -17,8 +17,8 @@
     String content = request.getParameter("content");
     String writer = request.getParameter("writer");
 
-    Board board = new Board(title,content, writer,LocalDateTime.now());
-    boardRepository.save(board);
+    Board board = new Board(title,content);
+    boardRepository.save(board,writer);
 
 
 %>
