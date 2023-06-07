@@ -6,18 +6,26 @@ import java.util.Date;
 public class Comment {
 
     private Integer id; //pk
-    private String title; //제목
+
     private String content; //내용
     private String writer; //작성자
     private Date create_date;//작성일
 
-    public Comment(Integer id, String title, String content, String writer, Date create_date) {
+    public Comment(Integer id, String content, String writer, Date create_date) {
         this.id = id;
-        this.title = title;
+
         this.content = content;
         this.writer = writer;
         this.create_date = create_date;
     }
+
+    public Comment( String content, String writer, Date create_date) {
+
+        this.content = content;
+        this.writer = writer;
+        this.create_date = create_date;
+    }
+
 
     public Integer getId() {
         return id;
@@ -27,13 +35,6 @@ public class Comment {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getContent() {
         return content;

@@ -54,7 +54,7 @@ public class MemberRepository {
         }
     }
 
-    //id찾기 id중복확인
+   /* //id찾기 id중복확인
     public boolean findByid(String id) throws SQLException {
         String sql = "SELECT id FROM member WHERE id = ?";
         Connection con = null;
@@ -75,7 +75,8 @@ public class MemberRepository {
             close(con, pstmt, rs);
         }
         return isIdDuplicate;
-    }
+    }*/
+
     //학번찾기 학번중복확인
     public boolean findByStudentId(String studentId) throws SQLException {
         String sql = "SELECT member_num FROM member WHERE member_num = ?";
@@ -98,6 +99,37 @@ public class MemberRepository {
         }
         return isStudentIdDuplicate;
     }
+
+    // 로그인한 사용자 세션로 이메일 조회 후 작성자 표시
+    public String getWriterEmailById(String memberId) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String writerEmail = "";
+
+        String sql = "SELECT member_email FROM member WHERE member_id = ?";
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                writerEmail = rs.getString("member_email");
+            }
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return writerEmail;
+    }
+
+
+
+
+
+
 
     private void close(Connection con, Statement stmt, ResultSet rs) {
         if (rs != null) {

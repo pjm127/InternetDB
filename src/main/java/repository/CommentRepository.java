@@ -5,12 +5,24 @@ import domain.Board;
 import domain.Comment;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommentRepository {
 
-    //댓글 작성
+    private static final CommentRepository instance = new CommentRepository();
+    private CommentRepository() {
+    }
+    public static CommentRepository getInstance() {
+        return instance;
+    }
 
-    public void save(Comment comment, Integer member_id, Integer board_id) throws SQLException {
+    MemberRepository memberRepository = MemberRepository.getInstance();
+
+
+
+    //댓글 작성
+    public void save(Comment comment, int member_id, int board_id) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         String sql = "INSERT INTO comment (member_id, board_id, c_content, com_created_at) VALUES (?, ?, ?, ?)";
@@ -35,8 +47,41 @@ public class CommentRepository {
         }
     }
 
+    // 게시글 id로 설정된 댓글리스트 보기
+    public List<Comment> getCommentList(int board_id) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<Comment> commentList = new ArrayList<>();
+        String sql = "SELECT member_id, c_content, com_created_at FROM comment where board_id =? ";
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, board_id);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String member_id = rs.getString("member_id");
+                String content = rs.getString("c_content");
+                Date created_at = rs.getDate("com_created_at");
+
+
+                String writer = memberRepository.getWriterEmailById(member_id); // 작성자 이메일 조회
+                //세션용    String writer = (String) session.getAttribute("member_email");
+                commentList.add(new Comment(content,writer,created_at));
+            }
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return commentList;
+    }
+
+
+
     //댓글 수정
-    public void updateComment(int commentId, String content, int userId) throws SQLException {
+    public void updateComment(int comment_id, String content, int member_id) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         String sql = "UPDATE comment SET c_content = ? WHERE comment_id = ? AND member_id = ?";
@@ -45,8 +90,8 @@ public class CommentRepository {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, content);
-            pstmt.setInt(2, commentId);
-            pstmt.setInt(3, userId);
+            pstmt.setInt(2, comment_id);
+            pstmt.setInt(3, member_id);
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
                 System.out.println("댓글 수정이 완료되었습니다.");
@@ -58,7 +103,7 @@ public class CommentRepository {
         }
     }
     //댓글 삭제
-    public void deleteComment(int commentId, int userId) throws SQLException {
+    public void deleteComment(int comment_id, int member_id) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         String sql = "DELETE FROM comment WHERE comment_id = ? AND member_id = ?";
@@ -66,8 +111,8 @@ public class CommentRepository {
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1, commentId);
-            pstmt.setInt(2, userId);
+            pstmt.setInt(1, comment_id);
+            pstmt.setInt(2, member_id);
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
                 System.out.println("댓글 삭제가 완료되었습니다.");

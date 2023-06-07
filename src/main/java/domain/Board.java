@@ -18,7 +18,7 @@ public class Board {
 
 
 
-    public Board(Integer id , String title, String content, String writer,Date create_date,Integer view) {
+    public Board( Integer id, String title, String content, String writer,Date create_date,Integer view) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -26,6 +26,22 @@ public class Board {
         this.create_date = create_date;
         this.view = view;
     }
+    public Board(  String title, String content, String writer,Date create_date,Integer view) {
+
+        this.title = title;
+        this.content = content;
+        this.writer= writer;
+        this.create_date = create_date;
+        this.view = view;
+    }
+    public Board(String title, String content,Date create_date, Integer view) {
+        this.title = title;
+        this.content = content;
+
+        this.create_date = create_date;
+        this.view = view;
+    }
+
     public Board( String title, String content) {
 
         this.title = title;
