@@ -33,17 +33,17 @@
    if (isStudentIdDuplicate) {
         out.println("이미 사용 중인 학번.");
     } else {
-        // 비밀번호가 일치할 경우 회원 가입 로직 수행
+
         Member member = new Member( username, password, studentId,UserStatus.USER);
         memberRepository.join(member);
         out.println("회원 가입이 완료되었습니다");
     }
 
     if (Objects.equals(password, password1)) {
-        // 비밀번호가 일치할 경우 회원 가입 로직 수행
+
         out.println("회원 가입이 완료되었습니다.");
     } else {
-        // 비밀번호가 일치하지 않을 경우 에러 메시지 출력
+
         out.println("비밀번호가 일치하지 않습니다.");
     }
 %>

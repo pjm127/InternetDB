@@ -13,8 +13,7 @@
   String title = request.getParameter("title");
   String content = request.getParameter("content");
 
-
-  Board board = boardRepository.getBoardById(Integer.valueOf(id));
+  Board board =new Board();
   board.setTitle(title);
   board.setContent(content);
   boardRepository.update(Integer.parseInt(id),title,content);

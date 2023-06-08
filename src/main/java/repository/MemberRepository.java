@@ -53,7 +53,7 @@ public class MemberRepository {
             close(con, pstmt, null);
         }
     }
-
+    //id로 학번
    /* //id찾기 id중복확인
     public boolean findByid(String id) throws SQLException {
         String sql = "SELECT id FROM member WHERE id = ?";

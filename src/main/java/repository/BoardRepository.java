@@ -53,7 +53,7 @@ public class BoardRepository {
         }
     }
 
-    //게시글 전체 조회 세션 member_id 로 로그인한 email 표시  나중에 세션에 바로
+    //게시글 전체 조회 세션 member_id 로 로그인한 email 표시
     public List<Board> getBoardList() throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -74,8 +74,8 @@ public class BoardRepository {
                 int viewCount = rs.getInt("b_view");
                 String member_id = rs.getString("member_id");
 
-                String writer = memberRepository.getWriterEmailById(member_id); // 작성자 이메일 조회
-                //세션용    String writer = (String) session.getAttribute("member_email");
+                String writer = memberRepository.getWriterEmailById(member_id); // member_id로 작성자 이메일 조회
+
                 boardList.add(new Board(id,title, content, writer, created_at, viewCount));
             }
         } finally {
@@ -85,7 +85,7 @@ public class BoardRepository {
         return boardList;
     }
 
-    //게시글 단건 조회 baord_id로 조히
+    //게시글 단건 조회 baord_id로 조회
     public Board getBoard(int board_id) {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -107,7 +107,6 @@ public class BoardRepository {
                 String member_id = rs.getString("member_id");
 
                 String writer = memberRepository.getWriterEmailById(member_id); // 작성자 이메일 조회
-                // 세션용: String writer = (String) session.getAttribute("member_email");
 
                 board = new Board(board_id, title, content, writer, created_at, viewCount);
                 incrementViewCount(board_id);
