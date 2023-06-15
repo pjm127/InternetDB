@@ -10,7 +10,7 @@
     Encrypt en = Encrypt.getInstance();
 
     String username = request.getParameter("email");
-    String studentId = request.getParameter("studentId");
+    Integer studentId = request.getParameter("studentId");
     String password = request.getParameter("password");
     String s = en.getSalt();
     String re_pas = en.getEnc(password, s);
@@ -34,7 +34,7 @@
         out.println("이미 사용 중인 학번.");
     } else {
 
-        Member member = new Member( username, password, studentId,UserStatus.USER);
+        Member member = new Member( username, password, studentId);
         memberRepository.join(member);
         out.println("회원 가입이 완료되었습니다");
     }

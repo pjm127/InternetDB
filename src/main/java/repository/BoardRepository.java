@@ -37,7 +37,7 @@ public class BoardRepository {
             pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, board.getTitle());
             pstmt.setString(2, board.getContent());
-            pstmt.setInt(3, user_id);
+            pstmt.setInt(3, user_id);]\
             pstmt.setDate(4, new Date(System.currentTimeMillis()));
             pstmt.setInt(5, 0);
             int affectedRows = pstmt.executeUpdate();

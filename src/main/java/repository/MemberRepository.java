@@ -34,7 +34,7 @@ public class MemberRepository {
 
             pstmt.setString(1, member.getEmail());
             pstmt.setString(2,re_pas);
-            pstmt.setString(3, member.getStudentID());
+            pstmt.setInt(3, member.getStudentID());
             pstmt.setDate(4, new Date(System.currentTimeMillis()));
             pstmt.setString(5, String.valueOf(UserStatus.USER));
             int affectedRows = pstmt.executeUpdate();
@@ -53,32 +53,9 @@ public class MemberRepository {
             close(con, pstmt, null);
         }
     }
-    //id로 학번
-   /* //id찾기 id중복확인
-    public boolean findByid(String id) throws SQLException {
-        String sql = "SELECT id FROM member WHERE id = ?";
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        boolean isIdDuplicate = false;
-        try {
-            con = getConnection();
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, id);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                isIdDuplicate = true;
-            }
-        } catch (SQLException e) {
-            throw e;
-        } finally {
-            close(con, pstmt, rs);
-        }
-        return isIdDuplicate;
-    }*/
 
     //학번찾기 학번중복확인
-    public boolean findByStudentId(String studentId) throws SQLException {
+    public boolean findByStudentId(Integer studentId) throws SQLException {
         String sql = "SELECT member_num FROM member WHERE member_num = ?";
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -87,7 +64,7 @@ public class MemberRepository {
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, studentId);
+            pstmt.setInt(1, studentId);
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 isStudentIdDuplicate = true;

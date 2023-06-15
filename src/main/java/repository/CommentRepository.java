@@ -68,7 +68,7 @@ public class CommentRepository {
 
 
                 String writer = memberRepository.getWriterEmailById(member_id); // 작성자 이메일 조회
-                //세션용    String writer = (String) session.getAttribute("member_email");
+
                 commentList.add(new Comment(content,writer,created_at));
             }
         } finally {

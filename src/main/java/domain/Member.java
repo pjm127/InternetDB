@@ -8,7 +8,7 @@ public class Member {
     private Integer id; //pk
     private String email; //이메일
     private String password; //비밀번호
-    private String studentID;//학번
+    private Integer studentID;//학번
     private Date create_date; // 가입 기간
     private UserStatus userStatus; //권한
 
@@ -17,12 +17,12 @@ public class Member {
     }
 
 
-    public Member( String email, String password, String studentID,UserStatus userStatus) {
+    public Member( String email, String password, Integer studentID) {
 
         this.email = email;
         this.password = password;
         this.studentID = studentID;
-        this.userStatus = userStatus;
+
     }
 
     public Integer getId() {
@@ -49,11 +49,11 @@ public class Member {
         this.password = password;
     }
 
-    public String getStudentID() {
+    public Integer getStudentID() {
         return studentID;
     }
 
-    public void setStudentID(String studentID) {
+    public void setStudentID(Integer studentID) {
         this.studentID = studentID;
     }
 

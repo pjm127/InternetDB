@@ -16,7 +16,7 @@ public class ProfileRepository {
     }
 
 
-    //프로필 작성 세션 user_id 넣음 6/7/3
+    //프로필 작성 세션 user_id 넣음
     public void save(Profile profile, Integer member_id) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -59,8 +59,6 @@ public class ProfileRepository {
             if (rs.next()) {
                 String name = rs.getString("profile_name");
                 Date created_at = rs.getDate("profile_created_at");
-
-
                 profile = new Profile(name, created_at);
 
             }
@@ -73,15 +71,22 @@ public class ProfileRepository {
         return profile;
     }
 
-    //세션 member_id로 프로필 찾아서 수정
-
-
-
-
-
-
-
-
+    //profile/{profile_id} 로 프로필 찾아서 수정, profile에 member_id와 세션 member_id 비교
+    public void update(int profile_id,int member_id , String name) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        String sql = "UPDATE profile SET profile_name = ? WHERE profile_id = ? and member_id = ? ";
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, name);
+            pstmt.setInt(2, profile_id);
+            pstmt.setInt(3, member_id);
+            pstmt.executeUpdate();
+        } finally {
+            close(con, pstmt, null);
+        }
+    }
 
 
 

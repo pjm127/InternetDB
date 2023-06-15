@@ -9,8 +9,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
   BoardRepository boardRepository = BoardRepository.getInstance();
-  String id = request.getParameter("id");
-  Board board = boardRepository.getBoardById(Integer.valueOf(id));
+  //세션에 저장된 member_id와 게시글에 저장된 memebr_id을 비교 후 같으면 수정
+  // 달라도 member_id로 member.getUserStatus 조회 UserStauts ==ADMIN이면 수정 가능
 %>
 <html>
 <head>
