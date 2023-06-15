@@ -15,7 +15,7 @@ public class Main {
         String driver = "com.mysql.cj.jdbc.Driver";
 
         // 2. 데이터베이스에 연결하기 위한 정보
-        String url = "jdbc:mysql://localhost:3306/exampledb?serverTimezone=Asia/Seoul";     // 연결문자열, localhost - 127.0.0.1
+        String url = "jdbc:mysql://localhost:3306/jsp?serverTimezone=Asia/Seoul";     // 연결문자열, localhost - 127.0.0.1
         String user = "pjm";                                   // 데이터베이스 ID
         String pw = "jmjm1102";                                     // 데이터베이스 PW
 

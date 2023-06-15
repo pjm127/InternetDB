@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class Member {
 
     private Integer id; //pk
-    private String email; //이메일
+    private String name; //이름
     private String password; //비밀번호
     private Integer studentID;//학번
     private Date create_date; // 가입 기간
@@ -17,9 +17,9 @@ public class Member {
     }
 
 
-    public Member( String email, String password, Integer studentID) {
+    public Member( String name, String password, Integer studentID) {
 
-        this.email = email;
+        this.name = name;
         this.password = password;
         this.studentID = studentID;
 
@@ -33,12 +33,12 @@ public class Member {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getName() {
+        return name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

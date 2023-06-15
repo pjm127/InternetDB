@@ -8,8 +8,7 @@
     request.setCharacterEncoding("utf-8");
     BoardRepository boardRepository = BoardRepository.getInstance();
 
-    List<Board> boardList = boardRepository.getBoard();
-
+    List<Board> boardList = boardRepository.getBoardList();
 %>
 <html>
 <head>
@@ -20,7 +19,12 @@
     for (Board board : boardList) {
 %>
 <div>
-
+    <!-- 게시글 제목을 클릭하면 해당 게시물의 상세 페이지로 이동합니다. -->
+    <a href="view.jsp/<%= board.getId() %>">
+        <%= board.getTitle() %>
+    </a>
+    <br>
+    <%= board.getContent() %>
 </div>
 <%
     }

@@ -67,7 +67,7 @@ public class CommentRepository {
                 Date created_at = rs.getDate("com_created_at");
 
 
-                String writer = memberRepository.getWriterEmailById(member_id); // 작성자 이메일 조회
+                String writer = memberRepository.getWriterNameById(member_id); // 작성자 이메일 조회
 
                 commentList.add(new Comment(content,writer,created_at));
             }

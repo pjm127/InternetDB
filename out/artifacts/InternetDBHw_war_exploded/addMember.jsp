@@ -9,12 +9,14 @@
     MemberRepository memberRepository = MemberRepository.getInstance();
     Encrypt en = Encrypt.getInstance();
 
-    String username = request.getParameter("email");
-    String studentId = request.getParameter("studentId");
+    String username = request.getParameter("name");
+    int studentId = Integer.parseInt(request.getParameter("studentId"));
     String password = request.getParameter("password");
-    String s = en.getSalt();
-    String re_pas = en.getEnc(password, s);
-    String password1 = request.getParameter("password1");
+    String re_pas = en.getEnc(password);
+    String password_confirm = request.getParameter("password_confirm");
+
+
+
 
 %>
 
@@ -30,20 +32,21 @@
     boolean isStudentIdDuplicate = memberRepository.findByStudentId(studentId);
 
     // 중복된 경우 에러 메시지 출력
-   if (isStudentIdDuplicate) {
+    if (isStudentIdDuplicate) {
         out.println("이미 사용 중인 학번.");
     } else {
-        // 비밀번호가 일치할 경우 회원 가입 로직 수행
-        Member member = new Member( username, password, studentId,UserStatus.USER);
+
+        Member member = new Member( username, password, studentId);
         memberRepository.join(member);
         out.println("회원 가입이 완료되었습니다");
     }
 
-    if (Objects.equals(password, password1)) {
-        // 비밀번호가 일치할 경우 회원 가입 로직 수행
+    //비밀번호 확인
+    if (Objects.equals(password, password_confirm)) {
+
         out.println("회원 가입이 완료되었습니다.");
     } else {
-        // 비밀번호가 일치하지 않을 경우 에러 메시지 출력
+
         out.println("비밀번호가 일치하지 않습니다.");
     }
 %>

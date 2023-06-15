@@ -14,11 +14,17 @@ public class Board {
     private Date create_date;//작성일
     private Integer view;// 조회수
 
+    private String file;
 
+    public String getFile() {
+        return file;
+    }
 
+    public void setFile(String file) {
+        this.file = file;
+    }
 
-
-    public Board( Integer id, String title, String content, String writer,Date create_date,Integer view) {
+    public Board(Integer id, String title, String content, String writer, Date create_date, Integer view) {
         this.id = id;
         this.title = title;
         this.content = content;

@@ -74,7 +74,7 @@ public class BoardRepository {
                 int viewCount = rs.getInt("b_view");
                 String member_id = rs.getString("member_id");
 
-                String writer = memberRepository.getWriterEmailById(member_id); // member_id로 작성자 이메일 조회
+                String writer = memberRepository.getWriterNameById(member_id); // member_id로 작성자 이메일 조회
 
                 boardList.add(new Board(id,title, content, writer, created_at, viewCount));
             }
@@ -106,7 +106,7 @@ public class BoardRepository {
                 int viewCount = rs.getInt("b_view");
                 String member_id = rs.getString("member_id");
 
-                String writer = memberRepository.getWriterEmailById(member_id); // 작성자 이메일 조회
+                String writer = memberRepository.getWriterNameById(member_id); // 작성자 이메일 조회
 
                 board = new Board(board_id, title, content, writer, created_at, viewCount);
                 incrementViewCount(board_id);

@@ -8,8 +8,7 @@
     request.setCharacterEncoding("utf-8");
     BoardRepository boardRepository = BoardRepository.getInstance();
 
-    List<Board> boardList = boardRepository.getBoard();
-
+    List<Board> boardList = boardRepository.getBoardList();
 %>
 <html>
 <head>
@@ -20,12 +19,12 @@
     for (Board board : boardList) {
 %>
 <div>
-    <h3><a href="board.jsp?id=<%= board.getId() %>"><%= board.getTitle() %></a></h3>
-    <p><h2>제목</h2><%= board.getTitle() %></p>
-    <p><h2>내용</h2><%= board.getContent() %></p>
-    <p><h2>id</h2><%= board.getId() %></p>
-    <p><h2>작성자</h2><%= board.getWriter() %></p>
-    <p>작성일: <%= board.getCreate_date().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) %></p>
+    <!-- 게시글 제목을 클릭하면 해당 게시물의 상세 페이지로 이동합니다. -->
+    <a href="view.jsp/<%= board.getId() %>">
+        <%= board.getTitle() %>
+    </a>
+    <br>
+    <%= board.getContent() %>
 </div>
 <%
     }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="login.css">
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<section class="login-form">
+		<h1>로그인</h1>
+		<form method="post" action="login.jsp">  
+			<div class="inID">
+				<input type="text" name="name"
+				autocomplete="off" required>    
+				<label for="id">이름</label>
+			</div>
+			<div class="inID">
+				<input type="password" name="password" 
+				autocomplete="off" required>    
+				<label for="pw">비밀번호</label>
+			</div>
+			<div class="inID">
+				<input type="text" name="studentId" 
+				autocomplete="off" required>    
+				<label for="pw">학번</label>
+			</div>
+			<div class="btID">
+				<button type="submit">로그인</button>
+			</div>
+		</form>
+		<div class="btID">
+    <button onclick="window.location.href='joinMember.html'">회원가입</button>
+</div>
+	</section>
+</body>
+</html>

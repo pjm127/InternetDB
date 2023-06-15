@@ -23,16 +23,16 @@ public class MemberRepository {
 
     //회원가입
     public void join(Member member) throws SQLException {
-        String sql = "insert into Member(member_email,member_pd,member_num,mem_created_t,mem_role) values( ?,?,?,?,?)";
+        String sql = "insert into Member(member_name,member_pd,member_num,mem_created_t,mem_role) values( ?,?,?,?,?)";
         Connection con = null;
         PreparedStatement pstmt = null;
-        String s = en.getSalt();
-        String re_pas = en.getEnc(member.getPassword(),s);
+
+        String re_pas = en.getEnc(member.getPassword());
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            pstmt.setString(1, member.getEmail());
+            pstmt.setString(1, member.getName());
             pstmt.setString(2,re_pas);
             pstmt.setInt(3, member.getStudentID());
             pstmt.setDate(4, new Date(System.currentTimeMillis()));
@@ -78,13 +78,13 @@ public class MemberRepository {
     }
 
     // 로그인한 사용자 세션로 이메일 조회 후 작성자 표시
-    public String getWriterEmailById(String memberId) throws SQLException {
+    public String getWriterNameById(String memberId) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         String writerEmail = "";
 
-        String sql = "SELECT member_email FROM member WHERE member_id = ?";
+        String sql = "SELECT member_name FROM member WHERE member_id = ?";
 
         try {
             con = getConnection();
@@ -93,7 +93,7 @@ public class MemberRepository {
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                writerEmail = rs.getString("member_email");
+                writerEmail = rs.getString("member_name");
             }
         } finally {
             close(con, pstmt, rs);
@@ -101,6 +101,44 @@ public class MemberRepository {
 
         return writerEmail;
     }
+
+
+    public int login(String name, String password, Integer studentId) {
+        String SQL = "SELECT member_pd FROM MEMBER WHERE member_name = ? AND member_num = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        String re_pas = en.getEnc(password);
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(SQL);
+            pstmt.setString(1, name);
+            pstmt.setInt(2, studentId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                if (rs.getString(1).equals(re_pas)) {
+                    return 1; // 로그인 성공
+                } else {
+                    return 0; // 비밀번호 불일치
+                }
+            }
+            return -1; // 아이디가 없음
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return -2; // 데이터베이스 오류
+    }
+
+
+
+
+
+
+
 
 
 
