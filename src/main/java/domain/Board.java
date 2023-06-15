@@ -8,53 +8,90 @@ import java.util.List;
 public class Board {
 
     private Integer id; //pk
-    private String title; //제목
-    private String content; //내용
-    private String writer; //작성자
-    private Date create_date;//작성일
-    private Integer view;// 조회수
+    private String title; //����
+    private String content; //����
+    private String writer; //�ۼ���
+    private Date create_date;
+    private Integer view;// 조회
+    private String filepath;  //파일경로 저장
+    private String youtube;    // 유튜브 url 저장
 
-    private String file;
 
-    public String getFile() {
-        return file;
+    public String getYoutube() {
+        return youtube;
     }
 
-    public void setFile(String file) {
-        this.file = file;
+
+    public void setYoutube(String youtube) {
+        this.youtube = youtube;
     }
 
-    public Board(Integer id, String title, String content, String writer, Date create_date, Integer view) {
+
+    public String getFilepath() {
+        return filepath;
+    }
+
+
+    public void setFilepath(String filepath) {
+        this.filepath = filepath;
+    }
+
+
+    public Board(String title, String content) {
+        this.title = title;
+        this.content = content;
+
+    }
+
+
+    public Board(Integer id, String title, String content, String writer, Date create_date, Integer view, String filename) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.writer= writer;
+        this.writer = writer;
         this.create_date = create_date;
         this.view = view;
+        this.filepath = filename;
     }
-    public Board(  String title, String content, String writer,Date create_date,Integer view) {
+
+    public Board(String title, String content, String writer, Date create_date, Integer view, String filepath, String youtube) {
 
         this.title = title;
         this.content = content;
-        this.writer= writer;
+        this.writer = writer;
+        this.create_date = create_date;
+        this.view = view;
+        this.filepath = filepath;
+        this.youtube = youtube;
+    }
+
+    public Board(String title, String content, Date create_date, Integer view) {
+        this.title = title;
+        this.content = content;
         this.create_date = create_date;
         this.view = view;
     }
-    public Board(String title, String content,Date create_date, Integer view) {
+
+    public Board(String title, String content,Date create_date, Integer view, String filepath, String youtube) {
         this.title = title;
         this.content = content;
-
         this.create_date = create_date;
         this.view = view;
+        this.filepath = filepath;
+        this.youtube = youtube;
     }
 
-    public Board( String title, String content) {
-
+    public Board(String title, String content, String filepath, String youtube) {
         this.title = title;
         this.content = content;
-
-
+        this.filepath = filepath;
+        this.youtube = youtube;
     }
+
+    public Board(String filepath) {
+        this.filepath = filepath;
+    }
+
     public Board() {
     }
 
@@ -73,6 +110,7 @@ public class Board {
     public void setTitle(String title) {
         this.title = title;
     }
+
 
     public String getContent() {
         return content;

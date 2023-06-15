@@ -102,6 +102,34 @@ public class MemberRepository {
         return writerEmail;
     }
 
+    //세션 학번으로 member_id조회
+    public int getMemberIdByStudentId(int studentId) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int memberId = 0;
+
+        String sql = "SELECT member_id FROM member WHERE member_num = ?";
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, studentId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                memberId = rs.getInt("member_id");
+            }
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return memberId;
+    }
+
+
+
+
 
     public int login(String name, String password, Integer studentId) {
         String SQL = "SELECT member_pd FROM MEMBER WHERE member_name = ? AND member_num = ?";
@@ -132,17 +160,6 @@ public class MemberRepository {
 
         return -2; // 데이터베이스 오류
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
