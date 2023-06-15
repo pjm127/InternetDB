@@ -39,6 +39,7 @@
         out.println("회원 가입이 완료되었습니다");
     }
 
+   //비밀번호 확인
     if (Objects.equals(password, password1)) {
 
         out.println("회원 가입이 완료되었습니다.");
