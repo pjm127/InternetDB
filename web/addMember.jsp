@@ -16,8 +16,6 @@
     String password_confirm = request.getParameter("password_confirm");
 
 
-
-
 %>
 
 <html>
@@ -36,7 +34,7 @@
         out.println("이미 사용 중인 학번.");
     } else {
 
-        Member member = new Member( username, password, studentId);
+        Member member = new Member(username, password, studentId);
         memberRepository.join(member);
         out.println("회원 가입이 완료되었습니다");
     }
@@ -44,7 +42,7 @@
     //비밀번호 확인
     if (Objects.equals(password, password_confirm)) {
 
-        out.println("회원 가입이 완료되었습니다.");
+        out.println("비밀번호 일치");
     } else {
 
         out.println("비밀번호가 일치하지 않습니다.");

@@ -11,9 +11,11 @@
     <title>Title</title>
 </head>
 <body>
+
+
 <%=application.getContextPath()%>
 <%= request.getSession().getServletContext().getRealPath("/")%>
-<%=application.getRealPath("/static/img")%>
-<img src="web/img/62.jsp">
+
+<img src="img/626.jpg">
 </body>
 </html>

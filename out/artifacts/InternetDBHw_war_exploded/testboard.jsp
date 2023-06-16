@@ -21,8 +21,7 @@
 <div>
     <!-- 게시글 제목을 클릭하면 해당 게시물의 상세 페이지로 이동합니다. -->
 
-    <%= board.getTitle() %>
-    <%= board.getContent() %>
+  
     <%= board.getFilepath() %>
 </div>
 <%

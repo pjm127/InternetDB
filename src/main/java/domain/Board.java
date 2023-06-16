@@ -16,6 +16,13 @@ public class Board {
     private String filepath;  //파일경로 저장
     private String youtube;    // 유튜브 url 저장
 
+    public Integer getView() {
+        return view;
+    }
+
+    public void setView(Integer view) {
+        this.view = view;
+    }
 
     public String getYoutube() {
         return youtube;
@@ -72,7 +79,7 @@ public class Board {
         this.view = view;
     }
 
-    public Board(String title, String content,Date create_date, Integer view, String filepath, String youtube) {
+    public Board(String title, String content, Date create_date, Integer view, String filepath, String youtube) {
         this.title = title;
         this.content = content;
         this.create_date = create_date;
@@ -88,8 +95,10 @@ public class Board {
         this.youtube = youtube;
     }
 
-    public Board(String filepath) {
+    public Board(String filepath, Integer id) {
+
         this.filepath = filepath;
+        this.id = id;
     }
 
     public Board() {

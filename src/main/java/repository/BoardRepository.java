@@ -13,12 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 public class BoardRepository {
 
     private static final BoardRepository instance = new BoardRepository();
+
     private BoardRepository() {
     }
+
     public static BoardRepository getInstance() {
         return instance;
     }
@@ -64,7 +65,7 @@ public class BoardRepository {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         List<Board> boardList = new ArrayList<>();
-        String sql = "SELECT b_image FROM board";
+        String sql = "SELECT b_image, board_id FROM board";
 
         try {
             con = getConnection();
@@ -73,8 +74,9 @@ public class BoardRepository {
 
             while (rs.next()) {
 
-                String b_image =rs.getString("b_image");
-                boardList.add(new Board(b_image));
+                String b_image = rs.getString("b_image");
+                Integer board_id = rs.getInt("board_id");
+                boardList.add(new Board(b_image, board_id));
             }
         } finally {
             close(con, pstmt, rs);
@@ -108,7 +110,7 @@ public class BoardRepository {
 
                 String writer = memberRepository.getWriterNameById(member_id); // �ۼ��� �̸��� ��ȸ
 
-                board = new Board(title, content, writer, created_at, viewCount,image,youtube_id);
+                board = new Board(title, content, writer, created_at, viewCount, image, youtube_id);
                 incrementViewCount(board_id);
             }
         } catch (SQLException e) {
@@ -121,9 +123,8 @@ public class BoardRepository {
     }
 
 
-
     //게시글 수정
-    public void update(int id, String title, String content,String image, String youtube) throws SQLException {
+    public void update(int id, String title, String content, String image, String youtube) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         String sql = "UPDATE Board SET b_title = ?, b_content = ?,b_image = ?, youtube_id = ? WHERE board_id = ?";
@@ -197,9 +198,6 @@ public class BoardRepository {
     }
 
 
-
-
-
     private void close(Connection con, Statement stmt, ResultSet rs) {
         if (rs != null) {
             try {
@@ -223,6 +221,7 @@ public class BoardRepository {
             }
         }
     }
+
     private Connection getConnection() {
         return DBConnectionUtil.getConnection();
     }

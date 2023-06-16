@@ -8,31 +8,38 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-  <title>Title</title>
+    <title>Title</title>
 </head>
 <body>
 <h2>회원의 정보 입력 폼</h2>
-<form method="post" action="addBoard.jsp">
-  <table>
-    <tr>
-      <td> 제목</td>
-      <td> <input type="text" name="title" size="20" ></td>
-    </tr>
+<form method="post" encType="multipart/form-data" action="addBoard.jsp?boardID=<%=board_id%>&keyValue=multipart">
+    <table>
+        <tr>
+            <td> 제목</td>
+            <td><input type="text" name="title" size="20"></td>
+        </tr>
 
-    <tr>
-      <td> 내용</td>
-      <td> <input type="text" name="content" size="20" ></td>
-    </tr>
-    <tr>
-      <td> 작성자</td>
-      <td> <input type="text" name="writer" size="20" ></td>
-    </tr>
-    <tr>
-      <td> <input type="submit" value="전송"> </td>
-      <td> <input type="reset" value="취소"> </td>
-    </tr>
+        <tr>
+            <td> 내용</td>
+            <td><input type="text" name="content" size="20"></td>
+        </tr>
 
-  </table>
+        <tr>
+            <td> 사진 업로드</td>
+            <td><input type="file" name="photo"></td>
+        </tr>
+
+        <tr>
+            <td> 유튜브 URL</td>
+            <td><input type="text" name="youtubeUrl" size="20"></td>
+        </tr>
+
+        <tr>
+            <td><input type="submit" value="전송"></td>
+            <td><input type="reset" value="취소"></td>
+        </tr>
+
+    </table>
 </form>
 </body>
 </html>
