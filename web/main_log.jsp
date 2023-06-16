@@ -8,9 +8,7 @@
     request.setCharacterEncoding("utf-8");
     BoardRepository boardRepository = BoardRepository.getInstance();
     List<Board> boardList = boardRepository.getBoardList();
-    for (Board board : boardList) {
 
-    }
 %>
 
 <%--<%

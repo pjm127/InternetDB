@@ -8,26 +8,20 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <<%
-  request.setCharacterEncoding("utf-8");
-  BoardRepository boardRepository = BoardRepository.getInstance();
-  String title = request.getParameter("title");
-  String content = request.getParameter("content");
-  String youtube = request.getParameter("Youtube");
-  String image = request.getParameter("image");
 
-  System.out.println("image = " + title);
-  System.out.println("image = " + content);
+  // 게시글의 사진 저장 경로를 가져온다고 가정하고 변수에 할당
+  String imagePath = "src/main/resources/static/img/62.jpg";
+
+  // imagePath를 사용하여 이미지를 표시
 
 
-  Board board = new Board(title, content,youtube,image);
-  Integer studentId = (Integer) session.getAttribute("studentId");
-  boardRepository.save(board,studentId);
+
 %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-<h2>성공</h2>
+<img src="<%= request.getContextPath() %>/<%= imagePath %>" >
 </body>
 </html>
