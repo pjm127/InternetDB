@@ -201,7 +201,7 @@
             <% for (Comment comment : commentList) { %>
             <div class="comment">
                 <p>
-                    <%= comment.getContent() %>
+                    내용: <%= comment.getContent() %>
                 </p>
                 <p>
                     작성일: <%= comment.getCreate_date() %>

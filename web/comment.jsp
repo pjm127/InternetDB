@@ -1,5 +1,6 @@
 <%@ page import="repository.CommentRepository" %>
-<%@ page import="repository.MemberRepository" %><%--
+<%@ page import="repository.MemberRepository" %>
+<%@ page import="java.io.PrintWriter" %><%--
   Created by IntelliJ IDEA.
   User: mikey
   Date: 2023-06-16
@@ -19,7 +20,10 @@
 
     String content = request.getParameter("content");
     commentRepository.save(content, memberId, boardId);
-
+    PrintWriter script = response.getWriter();
+    script.println("<script>");
+    script.println("location.href='view.jsp?board_id=" + boardId + "'");
+    script.println("</script>");
 %>
 
 
