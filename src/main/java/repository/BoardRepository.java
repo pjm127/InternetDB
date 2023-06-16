@@ -145,21 +145,23 @@ public class BoardRepository {
     }
 
     //게시글 삭제
-    public void delete(int id) throws SQLException {
-        String sql = "delete from board where board_id=?";
+    public boolean delete(int id) throws SQLException {
+        String sql = "DELETE FROM board WHERE board_id=?";
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, id);
-            pstmt.executeUpdate();
+            int affectedRows = pstmt.executeUpdate();
+            return affectedRows > 0;
         } catch (SQLException e) {
             throw e;
         } finally {
             close(con, pstmt, null);
         }
     }
+
 
     //조회수 조회
     public int getViewCount(int board_id) throws SQLException {
@@ -195,6 +197,30 @@ public class BoardRepository {
         } finally {
             close(con, pstmt, null);
         }
+    }
+
+    public int getMemberIdByBoardId(int boardId) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int memberId = 0;
+
+        String sql = "SELECT member_id FROM board WHERE board_id = ?";
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, boardId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                memberId = rs.getInt("member_id");
+            }
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return memberId;
     }
 
 

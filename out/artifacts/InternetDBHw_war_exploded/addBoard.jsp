@@ -12,6 +12,7 @@
 <%
     request.setCharacterEncoding("utf-8");
     BoardRepository boardRepository = BoardRepository.getInstance();
+    int sessionId = (Integer) session.getAttribute("studentId");
 
     String savePath = "C:\\Users\\mikey\\Desktop\\InternetDBHw\\web\\img";
     String file = "";
@@ -35,7 +36,7 @@
     board.setYoutube(youtubeUrl);
 
     // 게시글 저장
-    boardRepository.save(board, 666);
+    boardRepository.save(board, sessionId);
 
 
     PrintWriter script = response.getWriter();

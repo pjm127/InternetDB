@@ -14,7 +14,7 @@
     for (Board board : boardList) {
         String imagePath = "img/" + board.getFilepath();
 %>
-<a href="board.jsp?board_id=<%= board.getId() %>">
+<a href="view.jsp?board_id=<%= board.getId() %>">
     <p>파일 이름: <%= board.getFilepath() %>
     </p>
     <img src="<%= imagePath %>">

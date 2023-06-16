@@ -20,13 +20,15 @@
         String content = board.getContent();
         String youtubeUrl = board.getYoutube();
         String imagePath = "img/" + board.getFilepath();
-        int view = board.get
+        int view = board.getView();
 %>
 <h1><%= title %>
 </h1>
 <p><%= content %>
 </p>
 <p>YouTube URL: <%= youtubeUrl %>
+</p>
+<p> 조회수 : <%= view %>
 </p>
 <img src="<%= imagePath %>" alt="Image">
 <%

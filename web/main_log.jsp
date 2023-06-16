@@ -7,8 +7,10 @@
 <%
     request.setCharacterEncoding("utf-8");
     String username = (String) session.getAttribute("username");
+    Integer studentID = (Integer) session.getAttribute("studentID");
 
     out.println(username);
+    out.println(studentID);
 %>
 
 <%--<%

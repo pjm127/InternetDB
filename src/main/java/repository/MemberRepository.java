@@ -13,8 +13,10 @@ import java.util.logging.Logger;
 
 public class MemberRepository {
     private static final MemberRepository instance = new MemberRepository();
+
     private MemberRepository() {
     }
+
     public static MemberRepository getInstance() {
         return instance;
     }
@@ -33,7 +35,7 @@ public class MemberRepository {
             pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, member.getName());
-            pstmt.setString(2,re_pas);
+            pstmt.setString(2, re_pas);
             pstmt.setInt(3, member.getStudentID());
             pstmt.setDate(4, new Date(System.currentTimeMillis()));
             pstmt.setString(5, String.valueOf(UserStatus.USER));
@@ -127,8 +129,30 @@ public class MemberRepository {
         return memberId;
     }
 
+    //세션 학번으로 멤버 권한 찾기
+    public String getMemRoleByStudentId(int studentId) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String memRole = null;
 
+        String sql = "SELECT mem_role FROM member WHERE member_num = ?";
 
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, studentId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                memRole = rs.getString("mem_role");
+            }
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return memRole;
+    }
 
 
     public int login(String name, String password, Integer studentId) {
@@ -162,13 +186,12 @@ public class MemberRepository {
     }
 
 
-
     private void close(Connection con, Statement stmt, ResultSet rs) {
         if (rs != null) {
             try {
                 rs.close();
             } catch (SQLException e) {
-               e.printStackTrace();
+                e.printStackTrace();
             }
         }
         if (stmt != null) {
@@ -186,6 +209,7 @@ public class MemberRepository {
             }
         }
     }
+
     private Connection getConnection() {
         return DBConnectionUtil.getConnection();
     }
