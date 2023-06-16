@@ -79,7 +79,7 @@ public class MemberRepository {
         return isStudentIdDuplicate;
     }
 
-    // 로그인한 사용자 세션로 이메일 조회 후 작성자 표시
+    // 로그인한 사용자 세션로  작성자 표시
     public String getWriterNameById(String memberId) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
@@ -152,6 +152,31 @@ public class MemberRepository {
         }
 
         return memRole;
+    }
+
+    //세션 학번으로 member_name조회
+    public String getMemberNameByStudentId(int studentId) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String memberName = null;
+
+        String sql = "SELECT member_name FROM member WHERE member_num = ?";
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, studentId);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                memberName = rs.getString("member_name");
+            }
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return memberName;
     }
 
 

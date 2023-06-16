@@ -14,12 +14,14 @@
     BoardRepository boardRepository = BoardRepository.getInstance();
     Board board = boardRepository.getBoard(boardId);
 
+
     if (board != null) {
         // 게시물 정보 가져오기
         String title = board.getTitle();
         String content = board.getContent();
         String youtubeUrl = board.getYoutube();
         String imagePath = "img/" + board.getFilepath();
+        String writer = board.getWriter();
         int view = board.getView();
 %>
 <h1><%= title %>
