@@ -1,23 +1,21 @@
+<%@ page import="repository.BoardRepository" %>
+<%@ page import="repository.MemberRepository" %>
+<%@ page import="domain.Board" %>
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR" %>
 <%
     request.setCharacterEncoding("utf-8");
     int boardId = Integer.parseInt(request.getParameter("board_id"));
 
-    // 세션에서 학생 ID 가져오기
-    int sessionStudentId = (int) session.getAttribute("student_id");
-
-    // 세션 유저이름으로 member_id찾고 게시글 저장된 member_id같으면 삭제하고
-    //or 세션 유저이름으로 member_id찾고 그걸로 권한 찾고 권한이 admin이면 삭제 가능
-
-
     // MemberRepository 인스턴스 생성 및 회원 ID 및 권한 가져오기
-    MemberRepository memberRepository = MemberRepository.getInstance();
-    BoardRepository boardRepository = BoardRepository.getInstance();
-    int sessionMemberId = memberRepository.getMemberIdByStudentId(sessionStudentId); // 세션 학번으로 member_id
-    String memRoleByStudentId = memberRepository.getMemRoleByStudentId(sessionStudentId); // 세션 학번으로 권한
 
-    // 게시물의 작성자 회원 ID 가져오기
-    int boardMemberId = boardRepository.getMemberIdByBoardId(boardId);
+    BoardRepository boardRepository = BoardRepository.getInstance();
+    Board board = boardRepository.getBoard(boardId);
+    String title = board.getTitle();
+    String content = board.getContent();
+    String youtube = board.getYoutube(); //유튜브경로
+    String filepath = board.getFilepath(); //사진경로
+
+
 %>
 
 
@@ -96,6 +94,7 @@
         font-weight: 600; font-size: 2rem;
         margin: 2.5rem 0rem .5rem 0rem">
         제목
+
     </h1>
 </div>
 
@@ -131,31 +130,40 @@
     <div class="form-group">
         <!-- form tag using UserCreationForm with centered text with bootstrap5 library -->
 
-        <form action="update-process.jsp" method="POST" enctype="multipart/form-data">
+        <form action="update-process.jsp?board_id=<%= boardId %>" method="POST" enctype="multipart/form-data">
 
             <input type="hidden" name="csrfmiddlewaretoken"
                    value="SNdNKgLAwrScU9c1txNucOQxU4QCrCKbXmKSbxTYNEAuqDZ7tvUqW9uKiunOrR9c">
+            <%--            <div class="mb-3">--%>
+            <%--                <label class="form-label" for="id_title">제목</label>--%>
+
+            <%--                <input type="text" name="title" rows="1" maxlength="100" class="form-control"--%>
+            <%--                       placeholder="Enter the title of the article" required="" id="id_title">--%>
+            <%--            </div>--%>
             <div class="mb-3">
                 <label class="form-label" for="id_title">제목</label>
                 <input type="text" name="title" rows="1" maxlength="100" class="form-control"
-                       placeholder="Enter the title of the article" required="" id="id_title">
+                       placeholder="Enter the title of the article" required="" id="id_title"
+                       value="<%= title %>">
             </div>
 
-            <div class="mb-3"><label class="form-label" for="id_content">유튜브</label>
-
-                <input name="Youtube" class="form-control" placeholder="Youtube" required="" id="id_content">
-            </div>
             <div class="mb-3">
-
-                <label class="form-label" for="id_image">썸네일</label>
-                <input type="file" name="image" accept="image/*" class="form-control"
-                       placeholder="Enter the image of the article" style="border: none; height: auto;" required=""
-                       id="id_image">
+                <label class="form-label" for="id_content">유튜브</label>
+                <input type="text" name="youtube" class="form-control" placeholder="YouTube link"
+                       required="" id="id_content" value="<%= youtube %>">
             </div>
-            <div class="mb-3"><label class="form-label" for="id_content">내용</label>
-                <textarea name="content" cols="40" rows="10" class="form-control"
-                          placeholder="Enter the description of the article" id="id_content"></textarea></div>
 
+            <input type="file" name="image" accept="image/*" class="form-control"
+                   placeholder="Enter the image of the article" style="border: none; height: auto;" required=""
+                   id="id_image" value="<%= filepath %>">
+
+            <div class="mb-3">
+                <label class="form-label" for="id_content">내용</label>
+                <textarea name="content" cols="40" rows="10" class="form-control"
+                          placeholder="Enter the description of the article" id="id_content">
+        <%= content %>
+    </textarea>
+            </div>
 
             <input style="border-radius: 10rem; font-size: 1.25rem; margin-top: 1rem;
                           color: white; background-color: black; font-family: 'Do Hyeon';

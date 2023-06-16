@@ -1,12 +1,13 @@
-a
-<%@ page import="repository.BoardRepository" %>
 <%@ page import="domain.Board" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-<%@ page import="repository.BoardRepository" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
 <%@ page import="domain.Board" %>
 <%@ page import="java.util.List" %>
 <%@ page import="repository.MemberRepository" %>
+<%@ page import="repository.BoardRepository" %>
+<%@ page import="domain.Comment" %>
+<%@ page import="repository.CommentRepository" %>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -62,17 +63,16 @@ a
             BoardRepository boardRepository = BoardRepository.getInstance();
             Board board = boardRepository.getBoard(boardId);
             MemberRepository memberRepository = MemberRepository.getInstance();
+            CommentRepository commentRepository = CommentRepository.getInstance();
+            List<Comment> commentList = commentRepository.getCommentList(boardId);
 
             // 세션에서 학생 ID 가져오기
-            int sessionStudentId = (int) session.getAttribute("student_id");
+            int sessionStudentId = (Integer) session.getAttribute("studentId");
 
 
             int sessionMemberId = memberRepository.getMemberIdByStudentId(sessionStudentId); // 세션 학번으로 member_id
             String memRoleByStudentId = memberRepository.getMemRoleByStudentId(sessionStudentId); // 세션 학번으로 권한
             String memberNameByStudentId = memberRepository.getMemberNameByStudentId(sessionStudentId); // 세션 학번으로 member_name
-
-
-            if (board.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN"))
 
 
         %>
@@ -110,7 +110,7 @@ a
         font-family: 'Song Myung', sans-serif;
         font-weight: 600; font-size: 2rem;
         margin: 2.5rem 0rem .5rem 0rem">
-                <%= board.getTitle() %>">
+                <%= board.getTitle() %>
             </h1>
         </div>
 
@@ -147,10 +147,22 @@ a
 
             <div class="text-right">
                 <br>
+                <% if (board.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
                 <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
                    href="modify.jsp?board_id=<%= boardId %>">수정</a>
                 <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
-                   href="delete.jsp">삭제</a>
+                   href="delete.jsp?board_id=<%= boardId %>">삭제</a>
+
+
+                <% } else { %>
+                <button class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white" disabled>
+                    수정
+                </button>
+                <button class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white" disabled>
+                    삭제
+                </button>
+                <% } %>
+
             </div>
 
             <p style="margin-top: 3rem">
@@ -186,11 +198,25 @@ a
         </div>
 
         <div class="comment_list">
+            <% for (Comment comment : commentList) { %>
+            <div class="comment">
+                <p>
+                    <%= comment.getContent() %>
+                </p>
+                <p>
+                    작성일: <%= comment.getCreate_date() %>
+                </p>
+                <p>
+                    작성자: <%= comment.getWriter() %>
+                </p>
+                <!-- Add any other information or styling for each comment here -->
+            </div>
+            <% } %>
 
         </div>
 
         <div class="comment_create">
-            <form action="/comments/create/5926899" method="post">
+            <form action="/comment.jsp?board_id=<%= boardId %>" method="post">
                 <input type="hidden" name="csrfmiddlewaretoken"
                        value="UebCH2LreLw5WaXlnentL9kKMJv0BciBJeWVDCmmGY3vlnR850mNotktWCQnvTLf">
                 <div class="mb-3"><textarea name="content" cols="40" rows="4" class="form-control bg-light"
@@ -207,7 +233,6 @@ a
                 </div>
             </form>
         </div>
-    </div>
     </div>
 
 

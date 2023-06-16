@@ -11,8 +11,10 @@ import java.util.List;
 public class CommentRepository {
 
     private static final CommentRepository instance = new CommentRepository();
+
     private CommentRepository() {
     }
+
     public static CommentRepository getInstance() {
         return instance;
     }
@@ -20,9 +22,8 @@ public class CommentRepository {
     MemberRepository memberRepository = MemberRepository.getInstance();
 
 
-
     //댓글 작성
-    public void save(Comment comment, int member_id, int board_id) throws SQLException {
+    public void save(String content, int member_id, int board_id) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         String sql = "INSERT INTO comment (member_id, board_id, c_content, com_created_at) VALUES (?, ?, ?, ?)";
@@ -32,7 +33,7 @@ public class CommentRepository {
             pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setInt(1, member_id);
             pstmt.setInt(2, board_id);
-            pstmt.setString(3, comment.getContent());
+            pstmt.setString(3, content);
             pstmt.setDate(4, new Date(System.currentTimeMillis()));
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
@@ -69,7 +70,7 @@ public class CommentRepository {
 
                 String writer = memberRepository.getWriterNameById(member_id); // 작성자 이메일 조회
 
-                commentList.add(new Comment(content,writer,created_at));
+                commentList.add(new Comment(content, writer, created_at));
             }
         } finally {
             close(con, pstmt, rs);
@@ -77,7 +78,6 @@ public class CommentRepository {
 
         return commentList;
     }
-
 
 
     //댓글 수정
@@ -102,6 +102,7 @@ public class CommentRepository {
             close(con, pstmt, null);
         }
     }
+
     //댓글 삭제
     public void deleteComment(int comment_id, int member_id) throws SQLException {
         Connection con = null;
@@ -148,6 +149,7 @@ public class CommentRepository {
             }
         }
     }
+
     private Connection getConnection() {
         return DBConnectionUtil.getConnection();
     }

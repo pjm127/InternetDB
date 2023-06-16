@@ -1,27 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*" %>
 <%@ page import="repository.BoardRepository" %>
 <%@ page import="domain.Board" %>
 <%@ page import="java.util.List" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
-
-<%
-    request.setCharacterEncoding("utf-8");
-    String username = (String) session.getAttribute("username");
-    Integer studentID = (Integer) session.getAttribute("studentID");
-
-    out.println(username);
-    out.println(studentID);
-%>
-
-<%--<%
-    request.setCharacterEncoding("utf-8");
-    String username = (String) session.getAttribute("username");
-    Integer user_pw = (Integer) session.getAttribute("studentId");
-
-    out.println("설정된 세션의 속성 값 [1] : " + username + "<br>");
-    out.println("설정된 세션의 속성 값 [2] : " + user_pw);
-
-%>--%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -33,15 +15,17 @@
     <script src="/static/js/axios.min.js"></script>
 
     <!-- BOOTSTRAP CSS -->
+    <link rel="stylesheet" type="text/css" href="style.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.js"></script>
 
     <link rel="stylesheet" type="text/css" href="/static/articleapp/base.css">
     <link rel="stylesheet" type="text/css" href="/static/base.css">
-    <link rel="stylesheet" type="text/css" href="/static/pagination.css">
+
 
     <!-- GOOGLE FONTS -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -56,50 +40,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&amp;display=swap"
           rel="stylesheet">
 
-    <!-- drawer.css -->
-    <link rel="stylesheet" href="/static/drawer/css/drawer.min.css">
-    <!-- jquery & iScroll -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.2.0/iscroll.min.js"></script>
-    <!-- drawer.js -->
-    <script src="/static/drawer/js/drawer.min.js"></script>
-
-    <!-- CUSTOM FONTS -->
-    <style>
-        @font-face {
-            font-family: 'HSBomBaram';
-            src: local('HSBomBaram'),
-            url('/static/basestatic/fonts/HSBombaram.ttf') format("truetype");
-
-            unicode-range: U+AC00-D7A3;
-            font-weight: bold;
-        }
-
-        @font-face {
-            font-family: 'NanumSquareB';
-            src: local('NanumSquareB'),
-            url('/static/basestatic/fonts/Nanum/NanumSquareB.ttf') format("truetype");
-        }
-
-        @font-face {
-            font-family: 'NanumSquareEB';
-            src: local('NanumSquareEB'),
-            url('/static/basestatic/fonts/Nanum/NanumSquareEB.ttf') format("truetype");
-        }
-
-        @font-face {
-            font-family: 'NanumSquareL';
-            src: local('NanumSquareL'),
-            url('/static/basestatic/fonts/Nanum/NanumSquareL.ttf') format("truetype");
-        }
-
-        @font-face {
-            font-family: 'NanumSquareR';
-            src: local('NanumSquareR'),
-            url('/static/basestatic/fonts/Nanum/NanumSquareR.ttf') format("truetype");
-        }
-
-    </style>
 
     <style>
         .active {
@@ -115,19 +55,21 @@
 
 <!-- Page content -->
 <div>
-    <ul class="nav justify-content-end m-3" style="font-size: .8rem;font-family: 'Open Sans', sans-serif;">
-        <li class="nav-item">
-            <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
-               href="create.jsp">작성</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit"
-               href="logout.jsp">로그아웃</a>
+    <ul class="nav justify-content-end m-3" style="font-size: 0.8rem; font-family: 'Open Sans', sans-serif;">
+        <li class="nav-item" onclick="location.href='create.jsp'" style="margin-right: 10px;">
+            <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit;" href="create.jsp">
+                <strong>작성</strong>
+            </a>
         </li>
 
-
+        <li class="nav-item" onclick="location.href='joinMember.html'">
+            <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit;" href="logout.jsp">
+                <strong>로그아웃</strong>
+            </a>
+        </li>
     </ul>
 </div>
+
 
 <hr class="my-0" style="visibility: hidden">
 
@@ -166,6 +108,7 @@
 
 </style>
 
+
 <style>
     /* HORIZONTAL SCROLL */
     .scroll-container {
@@ -189,348 +132,66 @@
 
 </style>
 
+<script>
+    var $grid = $('.all_wrap').imagesLoaded(function () {
+        $grid.masonry({
+            itemSelector: '.grid-item',
+            fitwidth: true
+        });
+    });
+    $('.all_wrap').masonry({
+        // options...
+        itemSelector: '.grid-item',
+        fitwidth: true
+    });
+</script>
+
 <div class="container"
-     style="max-width: 1080px; margin: 2rem 0px 0px; padding: 0px; position: relative; height: 5829.12px;">
+     style="max-width: 1080px; margin: 2rem 0px 0px; padding: 0px; position: relative; height: 1080px;">
 
+    <%
+        BoardRepository boardRepository = BoardRepository.getInstance();
+        List<Board> boardList = boardRepository.getBoardList();
+        int count = 0;
+    %>
+    <table align="center">
+        <tr>
+            <% for (Board board : boardList) {
+                count++;
+                String imagePath = "img/" + board.getFilepath();
 
+            %>
+            <td>
+                <a href="view.jsp?board_id=<%= board.getId() %>">
+                    <img src="<%= imagePath %>">
+                </a>
+            </td>
+            <% if (count % 3 == 0) { %>
+        </tr>
+        <tr>
+            <% } %>
+            <% } %>
+        </tr>
+    </table>
+    <%
+    %>
     <div class="outer_card" style="position: absolute; transform: translate(108px, 0px);">
-        <a href="/articles/detail/d69ce550-a565-4a8b-b1b2-9bd90b9e772e">
-
-            <img src="cat.jpg" alt="image">
-
-            <!--             article upvote count with favorite icon-->
+        <a href="view.jsp? member_id=member_id">
 
 
-        </a>
     </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 95.5625px);">
-        <a href="/articles/detail/b58c7412-6656-4fd6-b7b5-3b7673211e3a">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 355.562px);">
-        <a href="/articles/detail/40b4f736-45b4-4e85-8916-0d38937b0120">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 431.188px);">
-        <a href="/articles/detail/7c8bab4d-37f3-4f8b-ba60-d16adb3a95b4">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 735.562px);">
-        <a href="/articles/detail/0b5f753a-89e4-4e0b-8f93-c9a12f5ad1d3">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 811.188px);">
-        <a href="/articles/detail/16da4d08-f92b-4dda-9257-9c8acd58eb3f">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 1166.75px);">
-        <a href="/articles/detail/e7c932cb-9994-4dff-9298-84d6be123f6c">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 1191.19px);">
-        <a href="/articles/detail/31790926-f65d-4fd4-9ea6-62dffd43d502">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 1546.75px);">
-        <a href="/articles/detail/c4483f4e-bc77-4e14-adf8-9bb3519fca07">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 1571.19px);">
-        <a href="/articles/detail/9b3ab0fe-e9c3-4dd8-83c5-b01c132cac80">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 1831.19px);">
-        <a href="/articles/detail/f6345703-9fec-46cb-b526-792a3747fca4">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 1926.75px);">
-        <a href="/articles/detail/3e0b1815-b357-48b8-9703-f25329afdab2">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 2211.19px);">
-        <a href="/articles/detail/d0aec3c8-c723-4f1d-9ebc-a915a3d019e8">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 2357.94px);">
-        <a href="/articles/detail/86f480fe-ac66-45ef-bee1-f19278a07591">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 2591.19px);">
-        <a href="/articles/detail/06b67c0e-e23a-4d3c-8927-471e822ddeda">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 2737.94px);">
-        <a href="/articles/detail/ddb821d8-7285-4265-b3fa-bb4bfd4c9abd">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 2971.19px);">
-        <a href="/articles/detail/d9230417-946b-499c-9c2b-e58f6214970b">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 3169.12px);">
-        <a href="/articles/detail/8abb7f73-fa80-4083-a29e-d699911c51cb">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 3351.19px);">
-        <a href="/articles/detail/397f988a-c862-495e-90d3-f68cc35fb474">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 3549.12px);">
-        <a href="/articles/detail/12ee4e7f-95a0-4e66-b50a-bfd2d0e95028">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 3731.19px);">
-        <a href="/articles/detail/a2deaa43-efb7-41d7-9106-a4fcbe629ed3">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 3929.12px);">
-        <a href="/articles/detail/f0975fb4-49ca-4fed-937a-2b6553c4edf4">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 4111.19px);">
-        <a href="/articles/detail/1cff874a-13f2-47fb-9d83-94ff5f6f75c3">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 4309.12px);">
-        <a href="/articles/detail/04505e64-67ba-429e-a86d-2796d7f5ab79">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 4491.19px);">
-        <a href="/articles/detail/d6b02031-dc9d-45d1-b592-50233d53fa62">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 4689.12px);">
-        <a href="/articles/detail/56275f99-9a31-4378-9ec2-4bed56c7d009">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 4871.19px);">
-        <a href="/articles/detail/e77ab4a0-774b-4615-be6e-da503f0dfd75">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 5069.12px);">
-        <a href="/articles/detail/d565d084-31d5-4603-9244-b28b2d15d544">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(368px, 5251.19px);">
-        <a href="/articles/detail/fd9fa272-3359-4d12-b6dc-4a67c3cb9296">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
-    <div class="outer_card" style="position: absolute; transform: translate(108px, 5449.12px);">
-        <a href="/articles/detail/b64538df-60fd-42aa-a2eb-8a6b3d8ce4db">
-
-            <img src="cat.png" alt="image">
-
-            <!--             article upvote count with favorite icon-->
-
-
-        </a>
-    </div>
-
 </div>
 
 
 <!-- article create button -->
 <div class="d-flex justify-content-center">
-    <a href="create.html" class="btn btn-dark rounded-pill px-5 border border-secondary">
-        작성
-    </a>
+    <ul class="nav justify-content-end m-3" style="font-size: 0.8rem; font-family: 'Open Sans', sans-serif;">
+        <li class="nav-item" onclick="location.href='create.jsp'" style="margin-right: 10px;">
+            <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit;" href="create.jsp">
+                <strong>작성</strong>
+            </a>
+        </li>
+    </ul>
 </div>
 
 <hr>

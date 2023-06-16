@@ -124,18 +124,18 @@ public class BoardRepository {
 
 
     //게시글 수정
-    public void update(int id, String title, String content, String image, String youtube) throws SQLException {
+    public void update(Board board, int boardId) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         String sql = "UPDATE Board SET b_title = ?, b_content = ?,b_image = ?, youtube_id = ? WHERE board_id = ?";
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, title);
-            pstmt.setString(2, content);
-            pstmt.setString(3, image);
-            pstmt.setString(4, youtube);
-            pstmt.setInt(5, id);
+            pstmt.setString(1, board.getTitle());
+            pstmt.setString(2, board.getContent());
+            pstmt.setString(3, board.getFilepath());
+            pstmt.setString(4, board.getYoutube());
+            pstmt.setInt(5, boardId);
 
             pstmt.executeUpdate();
 

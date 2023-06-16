@@ -6,34 +6,9 @@
 <!DOCTYPE html>
 <%
     int boardId = Integer.parseInt(request.getParameter("board_id"));
-
-    // 세션에서 학생 ID 가져오기
-    int sessionStudentId = (int) session.getAttribute("student_id");
-
-    // MemberRepository 인스턴스 생성 및 회원 ID 및 권한 가져오기
-    MemberRepository memberRepository = MemberRepository.getInstance();
     BoardRepository boardRepository = BoardRepository.getInstance();
-    int sessionMemberId = memberRepository.getMemberIdByStudentId(sessionStudentId); // 세션 학번으로 member_id
-    String memRoleByStudentId = memberRepository.getMemRoleByStudentId(sessionStudentId); // 세션 학번으로 권한
+    boardRepository.delete(boardId);
 
-    // 게시물의 작성자 회원 ID 가져오기
-    int boardMemberId = boardRepository.getMemberIdByBoardId(boardId);
-
-    if (sessionMemberId == boardMemberId || "ADMIN".equals(memRoleByStudentId)) {
-        // 회원 ID가 일치하거나 권한이 ADMIN인 경우에만 삭제 처리
-        try {
-            boardRepository.delete(boardId);
-            // 삭제 성공 시 처리할 내용
-            response.sendRedirect("main_unlog.jsp"); // 삭제 후 게시물 목록 페이지로 이동하거나 원하는 페이지로 리다이렉트
-        } catch (SQLException e) {
-            // 삭제 실패 시 처리할 내용
-            out.println("게시물 삭제에 실패했습니다.");
-            e.printStackTrace();
-        }
-    } else {
-        // 삭제 권한이 없는 경우에 대한 처리
-        out.println("게시물을 삭제할 권한이 없습니다.");
-    }
 %>
 
 <html>
