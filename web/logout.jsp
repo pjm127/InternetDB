@@ -1,5 +1,6 @@
+<%@ page import="java.io.PrintWriter" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <%
     request.setCharacterEncoding("utf-8");
@@ -8,27 +9,28 @@
     String user_id = (String) session.getAttribute("username");
     String user_pw = (String) session.getAttribute("studentId");
 
-    out.println("설정된 세션 이름 username : " + user_id + "<br>");
-    out.println("설정된 세션 값 studentId : " + user_pw + "<br>");
-%>
+    System.out.println(user_id);
+    System.out.println(user_pw);
 
+
+    response.sendRedirect("main_unlog.jsp");
+%>
 
 
 <html>
 <head>
-<meta charset="UTF-8">
-<title>로그아웃</title>
-
-    
-<style>
-body {
-  background-color: #f2f2f2;
-  color: #222;
-}
+    <meta charset="UTF-8">
+    <title>로그아웃</title>
 
 
+    <style>
+        body {
+            background-color: #f2f2f2;
+            color: #222;
+        }
 
-</style>
+
+    </style>
 
 </head>
 <body>
