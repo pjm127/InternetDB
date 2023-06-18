@@ -139,6 +139,7 @@
 
             <%--                <input type="text" name="title" rows="1" maxlength="100" class="form-control"--%>
             <%--                       placeholder="Enter the title of the article" required="" id="id_title">--%>
+
             <%--            </div>--%>
             <div class="mb-3">
                 <label class="form-label" for="id_title">Á¦¸ñ</label>

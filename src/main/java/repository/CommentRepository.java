@@ -48,13 +48,47 @@ public class CommentRepository {
         }
     }
 
+    //댓글 단건 조회
+    public Comment getComment(int board_id) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT member_id, c_content, com_created_at, comment_id  FROM comment where board_id =? ";
+        Comment comment = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, board_id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String member_id = rs.getString("member_id");
+                String content = rs.getString("c_content");
+                Date created_at = rs.getDate("com_created_at");
+                int comment_id = rs.getInt("comment_id");
+                String writer = memberRepository.getWriterNameById(member_id); // �ۼ��� �̸��� ��ȸ
+
+                comment = new Comment(content, writer, created_at, comment_id);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return comment;
+    }
+
+
     // 게시글 id로 설정된 댓글리스트 보기
     public List<Comment> getCommentList(int board_id) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         List<Comment> commentList = new ArrayList<>();
-        String sql = "SELECT member_id, c_content, com_created_at FROM comment where board_id =? ";
+        String sql = "SELECT member_id, c_content, com_created_at, comment_id FROM comment where board_id =? ";
 
         try {
             con = getConnection();
@@ -66,11 +100,11 @@ public class CommentRepository {
                 String member_id = rs.getString("member_id");
                 String content = rs.getString("c_content");
                 Date created_at = rs.getDate("com_created_at");
-
+                int comment_id = rs.getInt("comment_id");
 
                 String writer = memberRepository.getWriterNameById(member_id); // 작성자 이메일 조회
 
-                commentList.add(new Comment(content, writer, created_at));
+                commentList.add(new Comment(content, writer, created_at, comment_id));
             }
         } finally {
             close(con, pstmt, rs);
@@ -81,17 +115,17 @@ public class CommentRepository {
 
 
     //댓글 수정
-    public void updateComment(int comment_id, String content, int member_id) throws SQLException {
+    public void updateComment(int comment_id, String content) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
-        String sql = "UPDATE comment SET c_content = ? WHERE comment_id = ? AND member_id = ?";
+        String sql = "UPDATE comment SET c_content = ? WHERE comment_id = ? ";
 
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, content);
             pstmt.setInt(2, comment_id);
-            pstmt.setInt(3, member_id);
+
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
                 System.out.println("댓글 수정이 완료되었습니다.");
@@ -104,21 +138,21 @@ public class CommentRepository {
     }
 
     //댓글 삭제
-    public void deleteComment(int comment_id, int member_id) throws SQLException {
+    public void deleteComment(int comment_id) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
-        String sql = "DELETE FROM comment WHERE comment_id = ? AND member_id = ?";
+        String sql = "DELETE FROM comment WHERE comment_id = ? ";
 
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, comment_id);
-            pstmt.setInt(2, member_id);
+
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows > 0) {
-                System.out.println("댓글 삭제가 완료되었습니다.");
+                System.out.println("delete");
             } else {
-                System.out.println("댓글 삭제에 실패하였습니다.");
+                System.out.println("delete false.");
             }
         } finally {
             close(con, pstmt, null);

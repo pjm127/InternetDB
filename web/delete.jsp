@@ -14,7 +14,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>로그아웃</title>
+    <title>게시글 삭제</title>
     <style>
         body {
             background-color: #f2f2f2;

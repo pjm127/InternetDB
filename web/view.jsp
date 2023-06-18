@@ -64,6 +64,7 @@
             Board board = boardRepository.getBoard(boardId);
             MemberRepository memberRepository = MemberRepository.getInstance();
             CommentRepository commentRepository = CommentRepository.getInstance();
+            Comment comment1 = commentRepository.getComment(boardId);
             List<Comment> commentList = commentRepository.getCommentList(boardId);
 
             // 세션에서 학생 ID 가져오기
@@ -210,10 +211,22 @@
                     작성자: <%= comment.getWriter() %>
                 </p>
                 <!-- Add any other information or styling for each comment here -->
+
+                <!-- 수정 버튼 -->
+                <% if (comment.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
+                <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+                   href="comment_modify.jsp?comment_id=<%= comment.getId() %>">수정</a>
+                <% } %>
+
+                <!-- 삭제 버튼 -->
+                <% if (comment.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
+                <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+                   href="comment_delete.jsp?comment_id=<%= comment.getId() %>">삭제</a>
+                <% } %>
             </div>
             <% } %>
-
         </div>
+
 
         <div class="comment_create">
             <form action="/comment.jsp?board_id=<%= boardId %>" method="post">

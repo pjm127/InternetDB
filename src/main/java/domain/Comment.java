@@ -11,7 +11,7 @@ public class Comment {
     private String writer; //작성자
     private Date create_date;//작성일
 
-    public Comment(Integer id, String content, String writer ){
+    public Comment(Integer id, String content, String writer) {
         this.id = id;
 
         this.content = content;
@@ -19,11 +19,12 @@ public class Comment {
 
     }
 
-    public Comment( String content, String writer, Date create_date) {
+    public Comment(String content, String writer, Date create_date, Integer id) {
 
         this.content = content;
         this.writer = writer;
         this.create_date = create_date;
+        this.id = id;
     }
 
 
