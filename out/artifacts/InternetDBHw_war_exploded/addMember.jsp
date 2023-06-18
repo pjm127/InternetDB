@@ -14,7 +14,7 @@
     String password = request.getParameter("password");
     String re_pas = en.getEnc(password);
     String password_confirm = request.getParameter("password_confirm");
-
+    response.sendRedirect("main_unlog.jsp");
 
 %>
 
