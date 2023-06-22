@@ -8,7 +8,7 @@
     int boardId = Integer.parseInt(request.getParameter("board_id"));
     BoardRepository boardRepository = BoardRepository.getInstance();
     boardRepository.delete(boardId);
-
+    response.sendRedirect("main_log.jsp");
 %>
 
 <html>

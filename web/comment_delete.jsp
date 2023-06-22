@@ -7,9 +7,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
+
     int comment_id = Integer.parseInt(request.getParameter("comment_id"));
     CommentRepository commentRepository = CommentRepository.getInstance();
+    int boardIdByCommentId = commentRepository.getBoardIdByCommentId(comment_id);
     commentRepository.deleteComment(comment_id);
+
+    String redirectUrl = "/view.jsp?board_id=" + boardIdByCommentId;
+    response.sendRedirect(redirectUrl);
 %>
 
 

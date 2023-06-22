@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+* {margin:0;padding:0;box-sizing:border-box;}
+
+body{
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	height:100vh;
+	background: white no-repeat center;
+	background-size: cover;
+}
+
+.login-form {position: relative; z-index:2;}	/*제목설정*/
+.login-form h1{		/*제목 글자 크기 위치*/
+	font-size:32px; 
+	text-align:center;
+	margin-bottom:60px;
+}
+.inID {			/*입력창 정보 위치*/
+	width:400px;
+	position: relative;
+	margin-top:20px; 		/*간격*/
+}
+.inID:first-child {	
+	margin-top:0;		/*제목과 간격 없애기*/
+}
+.inID input {		/*입력창 설정*/
+	width:100%;
+	padding:20px 25px 10px;
+	background-color:transparent;
+	border:none;
+	border-bottom: 1px solid;
+	font-size:15px;
+	outline:none;
+}
+.inID label{		/*아이디 비번 글씨*/
+	position:absolute; left:10px; top:15px;
+	transition:top .5s ease;
+	font-weight:bold;
+}
+
+.inID input:focus + label,
+.inID input:valid + label {		/*아이디 비번 글씨 위로 올라가기*/
+	top : 0;
+	font-size:13px;
+	color: #400080;
+}
+
+.btID {margin-top:30px;}
+.btID button {
+	width:100%;
+	height:30px;
+	background: black;
+	color:white;
+	font-size:px;
+	border:none;
+	border-radius:25px;		/*둥글게*/
+	cursor:pointer;
+}
+
+.join{
+	margin-top:20px;
+	text-align:center;
+}
+
+.join a{
+	font-size:15px;
+	color:black;
+}

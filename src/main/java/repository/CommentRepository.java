@@ -20,7 +20,7 @@ public class CommentRepository {
     }
 
     MemberRepository memberRepository = MemberRepository.getInstance();
-
+    CommentRepository commentRepository = CommentRepository.getInstance();
 
     //댓글 작성
     public void save(String content, int member_id, int board_id) throws SQLException {
@@ -49,7 +49,7 @@ public class CommentRepository {
     }
 
     //댓글 단건 조회
-    public Comment getComment(int board_id) {
+    public Comment getCommentByBoardId(int board_id) {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -81,6 +81,37 @@ public class CommentRepository {
         return comment;
     }
 
+    public Comment getCommentByCommentId(int comment_id) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT member_id, c_content, com_created_at, comment_id  FROM comment where comment_id =? ";
+        Comment comment = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, comment_id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String member_id = rs.getString("member_id");
+                String content = rs.getString("c_content");
+                Date created_at = rs.getDate("com_created_at");
+                int commemt = rs.getInt("comment_id");
+                String writer = memberRepository.getWriterNameById(member_id); // �ۼ��� �̸��� ��ȸ
+
+                comment = new Comment(content, writer, created_at, commemt);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return comment;
+    }
 
     // 게시글 id로 설정된 댓글리스트 보기
     public List<Comment> getCommentList(int board_id) throws SQLException {
@@ -159,6 +190,36 @@ public class CommentRepository {
         }
     }
 
+    //comment_id로 board_id 찾기
+    public int getBoardIdByCommentId(int comment_id) {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        String sql = "SELECT board_id  FROM comment where comment_id =? ";
+        int board_id = 0;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, comment_id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+
+                int board_id1 = rs.getInt("board_id");
+
+
+                board_id = board_id1;
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(con, pstmt, rs);
+        }
+
+        return board_id;
+    }
 
     private void close(Connection con, Statement stmt, ResultSet rs) {
         if (rs != null) {

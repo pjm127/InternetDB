@@ -86,46 +86,9 @@
     </a>
 </div>
 
-<hr>
-<div class="container">
 
-    <h1 style=" text-align: center;
-        font-family: 'Song Myung', sans-serif;
-        font-weight: 600; font-size: 2rem;
-        margin: 2.5rem 0rem .5rem 0rem">
-        제목
-
-    </h1>
-</div>
-
-<div style="text-align: center">
-
-    <div style="text-align: center; box-shadow: #d4d4d4 0px 0px 5px; border-radius: 1rem;
-            display: inline-block;" class="mx-2">
-        <a href="/accounts/detail/5a9eb383-61f8-4b06-a68c-2f50121f4377">
-
-            <img style="display: inline-block;    width: 2rem; height: 2rem; object-fit: cover;
-                    border-radius: 10px; box-shadow: #cccccc 0px 0px 5px;
-                     margin: .3rem; vertical-align: top" src="
-                     <!-- 로그인한 유저의 프로필 사진 링크 -->
-                     /static/articleapp/images/default.png
-                     
-                     " alt="">
-
-
-            <p style="text-align: center; vertical-align: bottom; display: inline-block;
-            font-family: 'Do Hyeon', sans-serif; font-size: 1.2rem; color: inherit;
-             margin: 0.3rem 0.6rem 0.3rem 0rem;">
-                <!-- 사용자 id -->
-                사용자ID
-            </p>
-        </a>
-    </div>
-</div>
-<hr>
 <div class="form_class_max_800px">
-    <img style="width: 100%" src="cat.png" alt="">
-    <hr>
+
     <!--  username input  -->
     <div class="form-group">
         <!-- form tag using UserCreationForm with centered text with bootstrap5 library -->

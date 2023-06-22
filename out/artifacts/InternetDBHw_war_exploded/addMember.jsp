@@ -9,10 +9,10 @@
     MemberRepository memberRepository = MemberRepository.getInstance();
     Encrypt en = Encrypt.getInstance();
 
-    String username = request.getParameter("name");
-    int studentId = Integer.parseInt(request.getParameter("studentId"));
-    String password = request.getParameter("password");
-    String re_pas = en.getEnc(password);
+    Member member = new Member();
+    member.setName(request.getParameter("name"));
+    member.setStudentID(Integer.parseInt(request.getParameter("studentId")));
+    member.setPassword(request.getParameter("password"));
     String password_confirm = request.getParameter("password_confirm");
     response.sendRedirect("main_unlog.jsp");
 
@@ -27,20 +27,19 @@
 <%
     // 중복 체크
 
-    boolean isStudentIdDuplicate = memberRepository.findByStudentId(studentId);
+    boolean isStudentIdDuplicate = memberRepository.findByStudentId(member.getStudentID());
 
     // 중복된 경우 에러 메시지 출력
     if (isStudentIdDuplicate) {
         out.println("이미 사용 중인 학번.");
     } else {
 
-        Member member = new Member(username, password, studentId);
         memberRepository.join(member);
         out.println("회원 가입이 완료되었습니다");
     }
 
     //비밀번호 확인
-    if (Objects.equals(password, password_confirm)) {
+    if (Objects.equals(member.getPassword(), password_confirm)) {
 
         out.println("비밀번호 일치");
     } else {

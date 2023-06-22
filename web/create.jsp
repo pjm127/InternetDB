@@ -89,7 +89,7 @@
         <div class="mb-3"><label class="form-label" for="id_content">내용</label>
             <textarea name="content" cols="40" rows="10" class="form-control"
                       placeholder="Enter the description of the article" id="id_content">
-        	</textarea>
+            </textarea>
         </div>
         <input style="border-radius: 10rem; font-size: 1.25rem; margin-top: 1rem;
                           color: white; background-color: black; font-family: 'Do Hyeon';

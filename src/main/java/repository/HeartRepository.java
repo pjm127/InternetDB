@@ -12,26 +12,30 @@ import java.util.List;
 public class HeartRepository {
 
     private static final HeartRepository instance = new HeartRepository();
+
     private HeartRepository() {
     }
+
     public static HeartRepository getInstance() {
         return instance;
     }
 
+    MemberRepository memberRepository = MemberRepository.getInstance();
+
     //좋아요 눌렀는지 조회
-    public void checkHeart(int member_id,int board_id) throws SQLException{
+    public void checkHeart(int studentId, int board_id) throws SQLException {
 
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
         String sql = "SELECT * FROM heart where member_id = ? and board_id = ?";
-
+        int memberIdByStudentId = memberRepository.getMemberIdByStudentId(studentId);
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
-            pstmt.setInt(1,member_id);
-            pstmt.setInt(2,board_id);
+            pstmt.setInt(1, memberIdByStudentId);
+            pstmt.setInt(2, board_id);
             rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -39,14 +43,14 @@ public class HeartRepository {
                 String deleteQuery = "DELETE FROM heart WHERE `board_id` = ? AND `member_id` = ?";
                 PreparedStatement deleteStmt = con.prepareStatement(deleteQuery);
                 deleteStmt.setInt(1, board_id);
-                deleteStmt.setInt(2, member_id);
+                deleteStmt.setInt(2, memberIdByStudentId);
                 deleteStmt.executeUpdate();
             } else {
                 // 좋아요 기록이 없는 경우 -> 기록 추가
                 String insertQuery = "INSERT INTO heart (`board_id`, `member_id`, `heart_created_at`) VALUES (?, ?, NOW())";
                 PreparedStatement insertStmt = con.prepareStatement(insertQuery);
                 insertStmt.setInt(1, board_id);
-                insertStmt.setInt(2, member_id);
+                insertStmt.setInt(2, memberIdByStudentId);
                 insertStmt.executeUpdate();
             }
         } finally {
@@ -55,35 +59,28 @@ public class HeartRepository {
 
     }
 
-
-
- /*   //좋아요 누름
-    public void clickHeart( int member_id, int board_id) throws SQLException {
+    public int countHeart(int board_id) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
-        String sql = "INSERT INTO heart (member_id, board_id, heart_created_at) VALUES (?, ?, ?, ?)";
+        ResultSet rs = null;
+        int count = 0;
 
+        String sql = "SELECT COUNT(*) AS count FROM heart WHERE board_id = ?";
         try {
             con = getConnection();
-            pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setInt(1, member_id);
-            pstmt.setInt(2, board_id);
-            pstmt.setDate(3, new Date(System.currentTimeMillis()));
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows > 0) {
-                ResultSet generatedKeys = pstmt.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int generatedId = generatedKeys.getInt(1);
-                    System.out.println("new ID: " + generatedId);
-                }
+            pstmt = con.prepareStatement(sql);
+            pstmt.setInt(1, board_id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                count = rs.getInt("count");
             }
         } finally {
-            close(con, pstmt, null);
+            close(con, pstmt, rs);
         }
+
+        return count;
     }
-
-*/
-
 
 
     private void close(Connection con, Statement stmt, ResultSet rs) {
@@ -109,6 +106,7 @@ public class HeartRepository {
             }
         }
     }
+
     private Connection getConnection() {
         return DBConnectionUtil.getConnection();
     }

@@ -7,6 +7,7 @@
 <%@ page import="repository.BoardRepository" %>
 <%@ page import="domain.Comment" %>
 <%@ page import="repository.CommentRepository" %>
+<%@ page import="repository.HeartRepository" %>
 
 <html lang="en">
 <head>
@@ -55,7 +56,8 @@
 
 <main role="main">
     <div>
-        <%
+            <%
+            request.setCharacterEncoding("utf-8");
             // 게시물 ID 가져오기
             int boardId = Integer.parseInt(request.getParameter("board_id"));
 
@@ -64,7 +66,7 @@
             Board board = boardRepository.getBoard(boardId);
             MemberRepository memberRepository = MemberRepository.getInstance();
             CommentRepository commentRepository = CommentRepository.getInstance();
-            Comment comment1 = commentRepository.getComment(boardId);
+            Comment comment1 = commentRepository.getCommentByBoardId(boardId);
             List<Comment> commentList = commentRepository.getCommentList(boardId);
 
             // 세션에서 학생 ID 가져오기
@@ -75,22 +77,40 @@
             String memRoleByStudentId = memberRepository.getMemRoleByStudentId(sessionStudentId); // 세션 학번으로 권한
             String memberNameByStudentId = memberRepository.getMemberNameByStudentId(sessionStudentId); // 세션 학번으로 member_name
 
+            HeartRepository heartRepository = HeartRepository.getInstance();
+            String name = (String) session.getAttribute("username");
 
         %>
         <!-- Page content -->
         <div>
-            <ul class="nav justify-content-end m-3" style="font-size: .8rem;font-family: 'Open Sans', sans-serif;">
-                <li class="nav-item">
-                    <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
-                       href="create.jsp">작성</a>
+
+            <ul class="nav justify-content-end m-3" style="font-size: 0.8rem; font-family: 'Open Sans', sans-serif;">
+                <li>
+                <li class="nav-item" style="margin-right: 10px;">
+
+                    <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit">
+                        <strong><%=name %>
+                        </strong>
+                    </a>
+
                 </li>
-                <li class="nav-item">
-                    <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit"
-                       href="logout.jsp">로그아웃</a>
+                <li>
+                <li class="nav-item" onclick="location.href='create.jsp'">
+                    <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+                       href="create.jsp">
+                        작성
+                    </a>
                 </li>
 
+                <li class="nav-item" onclick="location.href='joinMember.html'">
+                    <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit;"
+                       href="logout.jsp">
+                        <strong>로그아웃</strong>
+                    </a>
+                </li>
             </ul>
         </div>
+
 
         <hr class="my-0" style="visibility: hidden">
 
@@ -117,138 +137,218 @@
 
         <div style="text-align: center">
 
-            <div style="text-align: center; box-shadow: #d4d4d4 0px 0px 5px; border-radius: 1rem;
-            display: inline-block;" class="mx-2">
-                <a href="/accounts/detail/5a9eb383-61f8-4b06-a68c-2f50121f4377">
-
-                    <img style="display: inline-block;    width: 2rem; height: 2rem; object-fit: cover;
-                    border-radius: 10px; box-shadow: #cccccc 0px 0px 5px;
-                     margin: .3rem; vertical-align: top" src="
-
-                     /static/articleapp/images/default.png
-
-                     " alt="">
+            <div style="text-align: center">
+                <p style="text-align: center; vertical-align: bottom; display: inline-block;
+            font-family: 'Do Hyeon', sans-serif; font-size: 1.0rem; color:black;
+             margin: 0.3rem 0.6rem 0.3rem 0rem;">작성자</p>&nbsp;
 
 
-                    <p style="text-align: center; vertical-align: bottom; display: inline-block;
+                <p style="text-align: center; vertical-align: bottom; display: inline-block;
             font-family: 'Do Hyeon', sans-serif; font-size: 1.2rem; color: inherit;
              margin: 0.3rem 0.6rem 0.3rem 0rem;">
-                        <%= board.getWriter() %>
-                    </p>
+                    <%= board.getWriter() %>
+                </p>
+                <div style="text-align: Right">
+                    <p style="text-align: center; vertical-align: bottom; display: inline-block;
+            font-family: 'Do Hyeon', sans-serif; font-size: 1.0rem; color:black;
+             margin: 0.3rem 0.6rem 0.3rem 0rem;"> <%= board.getCreate_date() %>
+                </div>
+            </div>
+
+            <hr>
+            <div class="form_class_max_800px" align="center">
+
+                <% String imagePath = "img/" + board.getFilepath(); %>
+                <a>
+                    <img src="<%= imagePath %>" onclick="window.location.href='<%=board.getYoutube()%>';">
                 </a>
-            </div>
-        </div>
 
-        <hr>
-        <div class="form_class_max_800px" align="center">
-
-            <% String imagePath = "img/" + board.getFilepath(); %>
-            <img src="<%= imagePath %>">
-
-
-            <div class="text-right">
-                <br>
-                <% if (board.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
-                <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
-                   href="modify.jsp?board_id=<%= boardId %>">수정</a>
-                <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
-                   href="delete.jsp?board_id=<%= boardId %>">삭제</a>
-
-
-                <% } else { %>
-                <button class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white" disabled>
-                    수정
-                </button>
-                <button class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white" disabled>
-                    삭제
-                </button>
-                <% } %>
-
-            </div>
-
-            <p style="margin-top: 3rem">
-
-                <br>
-
-            </p>
-
-
-            <div style="text-align: center; margin: 2rem; margin-bottom: 1rem">
-                <a href="/likes/article/c0d5b8da-2cd9-4fac-ad4d-28a91004f21e/like/">
-                <span class="upvote_button">
-
-                <i style="font-size: 2rem !important; vertical-align: middle;
-                    color: #ff6e78" class="material-icons">favorite</i>
-
-                    <span style="font-family: 'Noto Sans KR', serif; font-weight: 700" class="upvote_count">0</span>
-                </span>
-                </a>
-            </div>
-
-
-        </div>
-    </div>
-    <hr>
-
-    <!-- Comment section -->
-    <div class="comment_section form_class_max_800px">
-        <div class="comment_title">
-            <h3 style="font-family: 'Do Hyeon'; font-weight: 700; font-size: 1.5rem; margin-bottom: 1rem">
-                Comments
-            </h3>
-        </div>
-
-        <div class="comment_list">
-            <% for (Comment comment : commentList) { %>
-            <div class="comment">
-                <p>
-                    내용: <%= comment.getContent() %>
-                </p>
-                <p>
-                    작성일: <%= comment.getCreate_date() %>
-                </p>
-                <p>
-                    작성자: <%= comment.getWriter() %>
-                </p>
-                <!-- Add any other information or styling for each comment here -->
-
-                <!-- 수정 버튼 -->
-                <% if (comment.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
-                <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
-                   href="comment_modify.jsp?comment_id=<%= comment.getId() %>">수정</a>
-                <% } %>
-
-                <!-- 삭제 버튼 -->
-                <% if (comment.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
-                <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
-                   href="comment_delete.jsp?comment_id=<%= comment.getId() %>">삭제</a>
-                <% } %>
-            </div>
-            <% } %>
-        </div>
-
-
-        <div class="comment_create">
-            <form action="/comment.jsp?board_id=<%= boardId %>" method="post">
-                <input type="hidden" name="csrfmiddlewaretoken"
-                       value="UebCH2LreLw5WaXlnentL9kKMJv0BciBJeWVDCmmGY3vlnR850mNotktWCQnvTLf">
-                <div class="mb-3"><textarea name="content" cols="40" rows="4" class="form-control bg-light"
-                                            style="color: inherit" placeholder="Enter the description of the comment"
-                                            required="" id="id_content"></textarea></div>
 
                 <div class="text-right">
-                    <!-- Button with dark background and trailing send icon from material icon -->
-                    <button type="submit" class="btn btn-dark btn-sm">
-                        <i class="material-icons" style="color: white; font-size: 1.5rem; vertical-align: middle">
-                            send</i>
-                        Comment
+                    <br>
+                    <% if (board.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
+                    <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+                       href="modify.jsp?board_id=<%= boardId %>">수정</a>
+                    <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+                       href="delete.jsp?board_id=<%= boardId %>">삭제</a>
+
+
+                    <% } else { %>
+                    <button class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+                            disabled>
+                        수정
                     </button>
+                    <button class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+                            disabled>
+                        삭제
+                    </button>
+                    <% } %>
+
                 </div>
-            </form>
+
+                <p style="margin-top: 3rem">
+
+
+                </p>
+
+
+                <div style="text-align: center; margin: 2rem; margin-bottom: 1rem">
+                    <a href="#" onclick="redirectToHeartPage()">
+        <span class="upvote_button">
+            <i style="font-size: 2rem !important; vertical-align: middle; color: #ff6e78" class="material-icons">favorite</i>
+            <span style="font-family: 'Noto Sans KR', serif; font-weight: 700" class="upvote_count">
+                <%= heartRepository.countHeart(boardId) %>
+            </span>
+        </span>
+                    </a>
+                    <br>
+                    <p style="text-align: center; vertical-align: bottom; display: inline-block;
+            font-family: 'Do Hyeon', sans-serif; font-size: 1.0rem; color:black;
+             margin: 0.3rem 0.6rem 0.3rem 0rem;">조회수 <%=board.getView() %>
+                    </p>
+
+                    </p>
+                </div>
+
+                <script>
+                    function redirectToHeartPage() {
+                        var boardId = '<%= boardId %>';
+                        var url = '/heart.jsp?board_id=' + boardId;
+                        window.location.href = url;
+                    }
+                </script>
+
+
+            </div>
         </div>
-    </div>
+        <hr>
+
+        <!-- Comment section -->
+        <div class="comment_section form_class_max_800px">
+            <div class="comment_title">
+                <h3 style="font-family: 'Do Hyeon'; font-weight: 700; font-size: 1.5rem; margin-bottom: 1rem">
+                    Comments
+                </h3>
+            </div>
+            <div class="comment_list">
+                    <%
+                for (Comment comment : commentList) { %>
+                <div class="comment">
+                    <div>
+                        <p style="text-align: center; vertical-align: bottom; display: inline-block;
+            font-family: 'Do Hyeon', sans-serif; font-size: 1.2rem; color: black;
+             margin: 0.3rem 0.6rem 0.3rem 0rem;">
+                            <%= board.getWriter() %>
+                        </p>
+
+                        <p style="text-align: center; vertical-align: bottom; display: inline-block;
+            font-family: 'Do Hyeon', sans-serif; font-size: 1.0rem; color:black;
+             margin: 0.3rem 0.6rem 0.3rem 0rem;"><%= comment.getCreate_date()%>&nbsp;</p>
+                        <p>
+                            <%= comment.getContent() %>
+                        </p>
+
+                        <!-- Add any other information or styling for each comment here -->
+
+                        <!-- 수정 버튼 -->
+                        <form action="comment_modify.jsp?comment_id=<%= comment.getId() %>" method="POST">
+                            <div id="textarea<%= comment.getId() %>" style="display: none;">
+                            <textarea name="content" cols="20" rows="4" class="form-control bg-light"
+                                      style="color: inherit" placeholder="Enter the description of the comment"
+                                      required="" id="id_content"></textarea>
+
+                                <input type="submit" class="btn btn-dark rounded-pill px-2 border border-secondary"
+                                       style="color: white; float: right;" name="submit" value="수정완료">
 
 
-    <div class="drawer-overlay drawer-toggle"></div>
+                            </div>
+
+                        </form>
+
+                        <% if (comment.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
+                        <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+                           href="#" onclick="showTextarea('<%= comment.getId() %>')">수정</a>
+                        <% } %>
+                        <%--                    <% if (comment.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>--%>
+                        <%--                    <a id="modify" class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"--%>
+                        <%--                    >수정</a>--%>
+                        <%--                    <% } %>--%>
+
+
+                        <!-- 삭제 버튼 -->
+                        <% if (comment.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
+                        <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+                           href="comment_delete.jsp?comment_id=<%= comment.getId() %>">삭제</a>
+
+
+                        <% } %>
+                        <hr>
+                        <br>
+                        <div id="myDIV" style="display:none">
+                            <div class="mb-3">
+                                <form action="comment_modify.jsp" method="post">
+                                    <input type="hidden" name="comment_id" value="<%= comment.getId() %>">
+                                    <textarea name="content" cols="40" rows="4" class="form-control bg-light"
+                                              style="color: inherit"
+                                              placeholder="Enter the description of the comment" required=""
+                                              id="id_content"></textarea>
+                                    <button type="submit"
+                                            class="btn btn-dark rounded-pill px-2 border border-secondary">완료
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                        <% } %>
+                        <br>
+
+                    </div>
+
+                    <%--                <script>--%>
+                    <%--                    document.getElementById("modify").addEventListener("click", modify);--%>
+
+                    <%--                    function modify() {--%>
+                    <%--                        var con = document.getElementById("myDIV");--%>
+                    <%--                        if (con.style.display == 'none') {--%>
+                    <%--                            con.style.display = 'block';--%>
+                    <%--                        } else if (con.style.display == 'block') {--%>
+                    <%--                            con.style.display = 'none';--%>
+                    <%--                        }--%>
+                    <%--                    }</script>--%>
+                    <script type="text/javascript">
+                        function showTextarea(commentId) {
+                            var textareaDiv = document.getElementById("textarea" + commentId);
+                            if (textareaDiv.style.display == 'none') {
+                                textareaDiv.style.display = "block";
+                            } else {
+                                textareaDiv.style.display = "none";
+                            }
+                        }
+                    </script>
+
+                    <div class="comment_create">
+                        <form action="comment.jsp?board_id=<%= boardId %>" method="post">
+                            <input type="hidden" name="csrfmiddlewaretoken"
+                                   value="UebCH2LreLw5WaXlnentL9kKMJv0BciBJeWVDCmmGY3vlnR850mNotktWCQnvTLf">
+                            <div class="mb-3"><textarea name="content" cols="40" rows="4"
+                                                        class="form-control bg-light"
+                                                        style="color: inherit"
+                                                        placeholder="Enter the description of the comment"
+                                                        required="" id="id_content"></textarea></div>
+
+                            <div class="text-right">
+                                <!-- Button with dark background and trailing send icon from material icon -->
+                                <button type="submit" class="btn btn-dark btn-sm">
+                                    <i class="material-icons"
+                                       style="color: white; font-size: 1.5rem; vertical-align: middle">
+                                        send</i>
+                                    Comment
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="drawer-overlay drawer-toggle"></div>
 </body>
 </html>

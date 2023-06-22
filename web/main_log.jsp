@@ -4,6 +4,10 @@
 <%@ page import="repository.BoardRepository" %>
 <%@ page import="domain.Board" %>
 <%@ page import="java.util.List" %>
+<%
+    String name = (String) session.getAttribute("username");
+
+%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -56,15 +60,22 @@
 <!-- Page content -->
 <div>
     <ul class="nav justify-content-end m-3" style="font-size: 0.8rem; font-family: 'Open Sans', sans-serif;">
-        <li class="nav-item" onclick="location.href='create.jsp'" style="margin-right: 10px;">
-            <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit;" href="create.jsp">
-                <strong>작성</strong>
+        <li>
+        <li class="nav-item" style="margin-right: 10px;">
+            <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit">
+                <strong><%=name %>
+                </strong>
             </a>
         </li>
-
+        <li>
+        <li class="nav-item" onclick="location.href='create.jsp'">
+            <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white" href="create.jsp">
+                작성
+            </a>
+        </li>
         <li class="nav-item" onclick="location.href='joinMember.html'">
             <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit;" href="logout.jsp">
-                <strong>로그아웃</strong>
+                <strong> 로그아웃</strong>
             </a>
         </li>
     </ul>
@@ -186,10 +197,11 @@
 <!-- article create button -->
 <div class="d-flex justify-content-center">
     <ul class="nav justify-content-end m-3" style="font-size: 0.8rem; font-family: 'Open Sans', sans-serif;">
-        <li class="nav-item" onclick="location.href='create.jsp'" style="margin-right: 10px;">
-            <a class="nav-item btn btn-sm btn-warning rounded-pill py-2" style="color: inherit;" href="create.jsp">
-                <strong>작성</strong>
-            </a>
+
+
+        <li class="nav-item">
+            <a class="btn btn-dark rounded-pill px-3 border border-secondary" style="color: white"
+               href="create.jsp">작성</a>
         </li>
     </ul>
 </div>
