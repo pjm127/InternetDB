@@ -116,7 +116,7 @@
 
 
 <div style="width: 100%; text-align: center;">
-    <a style="font-family: 'Abril Fatface', cursive; font-size: 3rem; color: inherit;" href="main-unlog.jsp">
+    <a style="font-family: 'Abril Fatface', cursive; font-size: 3rem; color: inherit;" href="main_unlog.jsp">
         NEOSHOCK
     </a>
 </div>

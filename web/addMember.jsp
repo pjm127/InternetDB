@@ -2,7 +2,7 @@
 <%@ page import="repository.MemberRepository" %>
 <%@ page import="java.util.Objects" %>
 <%@ page import="config.Encrypt" %>
-<%@ page import="domain.UserStatus" %>
+<%@ page import="java.io.PrintWriter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     request.setCharacterEncoding("utf-8");
@@ -13,8 +13,10 @@
     member.setName(request.getParameter("name"));
     member.setStudentID(Integer.parseInt(request.getParameter("studentId")));
     member.setPassword(request.getParameter("password"));
+
     String password_confirm = request.getParameter("password_confirm");
-    response.sendRedirect("main_unlog.jsp");
+    String password_confirm1 = request.getParameter("password");
+
 
 %>
 
@@ -24,28 +26,41 @@
 </head>
 <body>
 <h2>입력 완료된 회원 정보</h2>
+
 <%
     // 중복 체크
-
     boolean isStudentIdDuplicate = memberRepository.findByStudentId(member.getStudentID());
 
     // 중복된 경우 에러 메시지 출력
     if (isStudentIdDuplicate) {
-        out.println("이미 사용 중인 학번.");
+        PrintWriter script = response.getWriter();
+        script.println("<script>");
+        script.println("alert('이미 가입한 학번입니다.')");
+        script.println("history.back()"); // 다시 로그인 페이지로 보낸다. 전 페이지
+        script.println("</script>");
     } else {
+        if (password_confirm1.equals(password_confirm)) {
+            out.println("비밀번호 일치");
+            memberRepository.join(member);
+            out.println("회원 가입이 완료되었습니다.");
+            PrintWriter script = response.getWriter();
+            script.println("<script>");
+            script.println("location.href='main_unlog.jsp'"); // mainpage로 이동
+            script.println("</script>");
+        } else {
+            PrintWriter script = response.getWriter();
+            script.println("<script>");
+            script.println("alert('입력한 비밀번호가 불일치합니다.')");
+            script.println("history.back()"); // 다시 로그인 페이지로 보낸다. 전 페이지
+            script.println("</script>");
+        }
 
-        memberRepository.join(member);
-        out.println("회원 가입이 완료되었습니다");
+
     }
 
-    //비밀번호 확인
-    if (Objects.equals(member.getPassword(), password_confirm)) {
+    // 비밀번호 확인
 
-        out.println("비밀번호 일치");
-    } else {
-
-        out.println("비밀번호가 일치하지 않습니다.");
-    }
 %>
+
 </body>
 </html>
