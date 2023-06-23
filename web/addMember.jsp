@@ -40,9 +40,9 @@
         script.println("</script>");
     } else {
         if (password_confirm1.equals(password_confirm)) {
-            out.println("비밀번호 일치");
+
             memberRepository.join(member);
-            out.println("회원 가입이 완료되었습니다.");
+
             PrintWriter script = response.getWriter();
             script.println("<script>");
             script.println("location.href='main_unlog.jsp'"); // mainpage로 이동

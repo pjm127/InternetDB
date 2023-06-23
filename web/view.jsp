@@ -163,7 +163,13 @@
                     <img src="<%= imagePath %>" onclick="window.location.href='<%=board.getYoutube()%>';">
                 </a>
 
-
+                <br>
+                <br>
+                <div>
+                    <p style="text-align: center; font-family: 'Do Hyeon', sans-serif; font-size: 1.5rem; color:black;"><%=board.getContent()%>
+                    </p>
+                </div>
+                <hr>
                 <div class="text-right">
                     <br>
                     <% if (board.getWriter().equals(memberNameByStudentId) || memRoleByStudentId.equals("ADMIN")) { %>
@@ -185,6 +191,7 @@
                     <% } %>
 
                 </div>
+
 
                 <p style="margin-top: 3rem">
 
@@ -244,6 +251,8 @@
                         <p style="text-align: center; vertical-align: bottom; display: inline-block;
             font-family: 'Do Hyeon', sans-serif; font-size: 1.0rem; color:black;
              margin: 0.3rem 0.6rem 0.3rem 0rem;"><%= comment.getCreate_date()%>&nbsp;</p>
+
+
                         <p>
                             <%= comment.getContent() %>
                         </p>
